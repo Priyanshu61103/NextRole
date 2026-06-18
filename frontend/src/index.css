@@ -1,0 +1,15 @@
+@import "tailwindcss";
+/* @plugin "tailwindcss-animate"; */
+/* If using a plugin that expects config, point to it: */
+
+
+/* Optional: define theme tokens inline (v4) */
+@theme {
+    --color-brand: #f59e0b;
+}
+
+/* Your styles */
+
+/* button{
+    background-color: ;
+} */
