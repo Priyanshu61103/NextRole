@@ -42,6 +42,10 @@ const studentSchema = new mongoose.Schema({
       type:String,
       required:true
    },  
+   course:{
+      type:String,
+      required:true
+   }, 
    specialization:{
       type:String,
       required:true
@@ -58,6 +62,10 @@ const studentSchema = new mongoose.Schema({
       type:String,
       required:true
    }, 
+   startingYear:{
+      type:String,
+      required:true
+   },
    yearOfGraduation:{
       type:String,
       required:true
@@ -66,12 +74,28 @@ const studentSchema = new mongoose.Schema({
       type:String,
       default:"https://ik.imagekit.io/priyanshu61103/profile-logo.png"
    },
+   coverPhoto:{
+      type:String,
+      default:"https://ik.imagekit.io/priyanshu61103/job.png"
+   },
    appliedJobs:[{
       type:mongoose.Schema.Types.ObjectId,
       default:[]
    }],
    appliedInternships:[{
       type:mongoose.Schema.Types.ObjectId,
+      default:[]
+   }],
+   workExperience:[{
+      type:String,
+      default:[]
+   }],
+   projects:[{
+      type:String,
+      default:[]
+   }],
+   achievements:[{
+      type:String,
       default:[]
    }],
    createdAt: {

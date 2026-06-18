@@ -21,6 +21,8 @@ import LoginPage from "./LoginPage/LoginPage.jsx";
 import OtpVerification from "./Otp Verification/OtpVerification.jsx";
 import Profiledetails from "./Profile Details/Profiledetails.jsx";
 import Protected from "./Protected/Protected.jsx";
+import ProfilePage from "./Profile Page/ProfilePage.jsx";
+import EditProfile from "./Edit Profile/editProfile.jsx";
 
 const App = () => {
   return (
@@ -46,6 +48,8 @@ const App = () => {
           <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/otp-verification" element={<OtpVerification />}></Route>
           <Route path="/profile-details" element={<Profiledetails/>}></Route>
+          <Route path="/profile" element={<ProfilePage/>}></Route>
+          <Route path="/edit-profile" element={<EditProfile/>}></Route>
         </Routes>
         {/* <ToastContainer
           position="top-right"

@@ -15,10 +15,13 @@ const Profiledetails = () => {
   const [cgpa, setCgpa] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState("");
   const [yearOfGraduation, setYearOfGraduation] = useState("");
+  const [startingYear, setStartingYear] = useState("");
   const [summary, setSummary] = useState("");
   const [resume, setResume] = useState(undefined);
   const [collegeName, setCollegeName] = useState("");
   const [specialization, setSpecialization] = useState("");
+  const [course, setCourse] = useState("");
+  const [courseValidity, setCourseValidity] = useState(true);
   const [firstNameValidity, setFirstNameValidity] = useState(true);
   const [lastNameValidity, setLastNameValidity] = useState(true);
   const [mobileNumberValidity, setMobileNumberValidity] = useState(true);
@@ -26,6 +29,7 @@ const Profiledetails = () => {
     useState(true);
   const [yearOfGraduationValidity, setYearOfGraduationValidity] =
     useState(true);
+  const [startingYearValidity, setStartingYearValidity] = useState(true);
   const [summaryValidity, setSummaryValidity] = useState(true);
   const [resumeValidity, setResumeValidity] = useState(true);
   const [collegeNameValidity, setCollegeNameValidity] = useState(true);
@@ -70,8 +74,16 @@ const Profiledetails = () => {
         setCollegeNameValidity(false);
         return;
       }
+      if (course == "") {
+        setCourseValidity(false);
+        return;
+      }
       if (specialization == "") {
         setSpecializationValidity(false);
+        return;
+      }
+      if (startingYear == "") {
+        setStartingYearValidity(false);
         return;
       }
       if (yearOfGraduation == "") {
@@ -127,9 +139,11 @@ const Profiledetails = () => {
       formData.append("mobileNumber", mobileNumber);
       if (user == "student") {
         formData.append("yearsOfExperience", yearsOfExperience);
+        formData.append("startingYear", startingYear);
         formData.append("yearOfGraduation", yearOfGraduation);
         formData.append("summary", summary);
         formData.append("collegeName", collegeName);
+        formData.append("course", course);
         formData.append("specialization", specialization);
         formData.append("resumeFile", resume);
         formData.append("skills", skillsArray);
@@ -165,7 +179,9 @@ const Profiledetails = () => {
       if (data.success) {
         console.log(data.token);
         console.log(data.payload);
-        alert(`Welcome ${firstName} ${lastName} on NextRole , Login to enter the world of Crafting Careers.`);
+        alert(
+          `Welcome ${firstName} ${lastName} on NextRole , Login to enter the world of Crafting Careers.`,
+        );
         document.cookie = `token=,${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
@@ -224,8 +240,8 @@ const Profiledetails = () => {
                       value={firstName}
                       className={
                         firstNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setFirstNameValidity(true);
@@ -241,8 +257,8 @@ const Profiledetails = () => {
                       value={lastName}
                       className={
                         lastNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setLastNameValidity(true);
@@ -258,8 +274,8 @@ const Profiledetails = () => {
                       value={mobileNumber}
                       className={
                         mobileNumberValidity
-                          ? "border-2 border-black rounded-lg h-10 w-30 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-30 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-30 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-30 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setMobileNumberValidity(true);
@@ -297,8 +313,8 @@ const Profiledetails = () => {
                       value={cgpa}
                       className={
                         cgpaValidity
-                          ? "border-2 border-black rounded-lg h-10 w-30 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-30 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-30 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-30 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setCgpaValidity(true);
@@ -306,15 +322,15 @@ const Profiledetails = () => {
                       }}
                     />
                   </div>
-                  <div className="w-80">
+                  <div className="w-50">
                     <label htmlFor="college-name">College Name</label>
                     <input
                       type="text"
                       id="college-name"
                       className={
                         collegeNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-50 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-50 p-4 mt-1"
                       }
                       value={collegeName}
                       onChange={(event) => {
@@ -324,7 +340,25 @@ const Profiledetails = () => {
                     />
                   </div>
 
-                  <div className="w-80">
+                  <div className="w-50">
+                    <label htmlFor="course">Course</label>
+                    <input
+                      type="text"
+                      id="course"
+                      value={course}
+                      className={
+                        courseValidity
+                          ? "border-2 border-black rounded-lg h-5 w-50 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-50 p-4 mt-1"
+                      }
+                      onChange={(event) => {
+                        setCourseValidity(true);
+                        setCourse(event.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div className="w-50">
                     <label htmlFor="specialization">Specialization</label>
                     <input
                       type="text"
@@ -332,8 +366,8 @@ const Profiledetails = () => {
                       value={specialization}
                       className={
                         specializationValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-50 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-50 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setSpecializationValidity(true);
@@ -341,6 +375,25 @@ const Profiledetails = () => {
                       }}
                     />
                   </div>
+
+                  <div className="w-35">
+                    <label htmlFor="startingYear">Year of Commence</label>
+                    <input
+                      type="text"
+                      id="startingYear"
+                      value={startingYear}
+                      className={
+                        startingYearValidity
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
+                      }
+                      onChange={(event) => {
+                        setStartingYearValidity(true);
+                        setStartingYear(event.target.value);
+                      }}
+                    />
+                  </div>
+
                   <div className="w-35">
                     <label htmlFor="year-of-graduation">
                       Year of Graduation
@@ -351,8 +404,8 @@ const Profiledetails = () => {
                       value={yearOfGraduation}
                       className={
                         yearOfGraduationValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setYearOfGraduationValidity(true);
@@ -375,8 +428,8 @@ const Profiledetails = () => {
                       }}
                       className={
                         yearsOfExperienceValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                     />
                   </div>
@@ -446,8 +499,8 @@ const Profiledetails = () => {
                         id="skills"
                         className={
                           skillsArrayValidity
-                            ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                            : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                            ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                            : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                         }
                         onChange={(event) => {
                           setSkillsArrayValidity(true);
@@ -501,8 +554,8 @@ const Profiledetails = () => {
                       value={firstName}
                       className={
                         firstNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setFirstNameValidity(true);
@@ -518,8 +571,8 @@ const Profiledetails = () => {
                       value={lastName}
                       className={
                         lastNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-40 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-40 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-40 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-40 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setLastNameValidity(true);
@@ -535,8 +588,8 @@ const Profiledetails = () => {
                       value={mobileNumber}
                       className={
                         mobileNumberValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setMobileNumberValidity(true);
@@ -553,8 +606,8 @@ const Profiledetails = () => {
                       value={companyName}
                       className={
                         companyNameValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setCompanyNameValidity(true);
@@ -569,8 +622,8 @@ const Profiledetails = () => {
                       id="designation"
                       className={
                         designationValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                       }
                       value={designation}
                       onChange={(event) => {
@@ -587,8 +640,8 @@ const Profiledetails = () => {
                       value={companyLocation}
                       className={
                         companyLocationValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                       }
                       onChange={(event) => {
                         setCompanyLocationValidity(true);
@@ -620,8 +673,8 @@ const Profiledetails = () => {
                       id="companyWebsite"
                       className={
                         companyWebsiteValidity
-                          ? "border-2 border-black rounded-lg h-10 w-90 p-4 mt-1"
-                          : "border-2 border-red-500 rounded-lg h-10 w-90 p-4 mt-1"
+                          ? "border-2 border-black rounded-lg h-5 w-90 p-4 mt-1"
+                          : "border-2 border-red-500 rounded-lg h-5 w-90 p-4 mt-1"
                       }
                       value={companyWebsite}
                       onChange={(event) => {
@@ -694,7 +747,7 @@ const Profiledetails = () => {
                     className="w-100 flex justify-end"
                     onClick={submitHandler}
                   >
-                    <button className="flex gap-x-2 justify-center items-center h-10 w-30 bg-blue-600 p-2 rounded-xl text-white font-bold">
+                    <button className="flex gap-x-2 justify-center items-center h-5 w-30 bg-blue-600 p-2 rounded-xl text-white font-bold">
                       Submit
                     </button>
                   </div>
