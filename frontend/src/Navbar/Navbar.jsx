@@ -76,7 +76,7 @@ const Navbar = () => {
           />
         </div>
         <div onClick={()=>dispatch(setProfileTab())} className="h-15 w-15 flex justify-center items-center border-4 border-blue-600 rounded-full p-0">
-          {profileData && profileData.payload && <img src={profileData.payload.profilePhoto} alt="" />}
+          {profileData && profileData.payload && <img src={profileData.payload.profilePhoto} alt="" className="rounded-full"/>}
         </div>
       </div>
       <div

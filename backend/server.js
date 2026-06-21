@@ -6,7 +6,7 @@ import authRouter from "./src/routes/authRoute.js";
 import jobRouter from "./src/routes/jobRoute.js";
 import internshipRouter from "./src/routes/internshipRoute.js";
 import cookieParser from "cookie-parser";
-import userDataRouter from "./src/routes/userDataRoute.js";
+import profileRouter from "./src/routes/profileRoute.js";
 
 const app = express(); 
 const PORT = process.env.PORT;
@@ -24,7 +24,7 @@ await dbConnection();
 app.use(authRouter);
 app.use(jobRouter);
 app.use(internshipRouter);
-app.use(userDataRouter);
+app.use(profileRouter);
 app.listen(PORT,()=>{
     console.log("Server is running on Port",PORT);
 });
