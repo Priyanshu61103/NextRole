@@ -17,16 +17,37 @@ import {
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { setProfileData } from "../Redux/Slice/profileDataSlice/profileDataSlice";
+import ProfileTab from "../ProfileTab/ProfileTab";
 
 const ProfilePage = () => {
   const profileData = useSelector((state) => state.profileData.value);
   console.log(profileData);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const [arr, setArr] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const projectArray = [];
+  const workExperienceArray = [];
+  if (profileData && profileData.payload) {
+    const projects = profileData.payload.projects;
+    const workExperience = profileData.payload.workExperience;
+    for (let i = 0; i < projects.length; i++) {
+      const projectObj = {};
+      const projectArr = projects[i].split("=");
+      projectObj.title = projectArr[1];
+      projectObj.description = projectArr[3];
+      projectArray.push(projectObj);
+    }
+    for (let i = 0; i < workExperience.length; i++) {
+      const workExperienceObj = {};
+      const workExperienceArr = workExperience[i].split("=");
+      workExperienceObj.title = workExperienceArr[1];
+      workExperienceObj.description = workExperienceArr[3];
+      workExperienceArray.push(workExperienceObj);
+    }
+  }
   const fetchUserData = async () => {
     try {
       const response = await fetch("http://localhost:3200/fetch-user-data", {
@@ -58,7 +79,7 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-if (!profileData || !profileData.payload) fetchUserData();
+    if (!profileData || !profileData.payload) fetchUserData();
   }, []);
 
   const logOutHandler = () => {
@@ -69,10 +90,13 @@ if (!profileData || !profileData.payload) fetchUserData();
 
   return (
     <div
-      className="h-fit w-full text-white"
+      className={
+        profileTab ? "h-800 w-full text-white" : "h-fit w-full text-white"
+      }
       style={{ backgroundColor: "rgb(25,25,25)" }}
     >
       <Navbar />
+
       {profileData && profileData.payload && (
         <div
           className={
@@ -81,7 +105,7 @@ if (!profileData || !profileData.payload) fetchUserData();
                 ? "relative bottom-110 opacity-25 z-10"
                 : "relative bottom-60 opacity-25 z-10"
               : button == "on"
-                ? "relative bottom-50 z-10 opacity-25"
+                ? "relative bottom-55 z-10 opacity-25"
                 : "opacity-100 z-10"
           }
         >
@@ -279,11 +303,12 @@ if (!profileData || !profileData.payload) fetchUserData();
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Work Experience
                     </h1>
-                    {profileData.payload.workExperience.length > 0 ? (
-                      profileData.payload.workExperience.map((itr, index) => (
+                    {workExperienceArray.length > 0 
+                    ? (
+                      workExperienceArray.map((itr, index) => (
                         <div
                           ke={index}
-                          className="border-2 border-blue-500 rounded-2xl p-2"
+                          className="border-2 border-blue-500 rounded-2xl p-2 my-4"
                         >
                           <div className="text-lg font-semibold text-blue-400 underline">
                             {itr.title}
@@ -307,11 +332,11 @@ if (!profileData || !profileData.payload) fetchUserData();
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Projects
                     </h1>
-                    {profileData.payload.projects.length > 0 ? (
-                      profileData.payload.projects.map((itr, index) => (
+                    {projectArray.length > 0 ? (
+                      projectArray.map((itr, index) => (
                         <div
                           ke={index}
-                          className="border-2 border-blue-500 rounded-2xl p-2"
+                          className="border-2 border-blue-500 rounded-2xl p-2 my-4"
                         >
                           <div className="text-lg font-semibold text-blue-400 underline">
                             {itr.title}
@@ -335,17 +360,15 @@ if (!profileData || !profileData.payload) fetchUserData();
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Achievements
                     </h1>
-                    {profileData.payload.achievements.length > 0 ? (
+                    {profileData.payload.achievements.length > 0 &&
+                    profileData.payload.achievements[0].trim() != "" ? (
                       profileData.payload.achievements.map((itr, index) => (
                         <div
-                          ke={index}
-                          className="border-2 border-blue-500 rounded-2xl p-2"
+                          key={index}
+                          className="border-2 border-blue-500 rounded-2xl p-4 my-4"
                         >
-                          <div className="text-lg font-semibold text-blue-400 underline">
-                            {itr.title}
-                          </div>
-                          <div className="text-sm text-gray-300 mt-4">
-                            {itr.description}
+                          <div className="text-sm text-gray-300">
+                            {itr}
                           </div>
                         </div>
                       ))
@@ -361,8 +384,21 @@ if (!profileData || !profileData.payload) fetchUserData();
           </div>
         </div>
       )}
-      <Testimonials />
-      <Footer />
+      {profileTab && (
+        <div
+          className={
+            button == "on"
+              ? "flex justify-end z-100 relative bottom-445 right-5"
+              : "flex justify-end z-100 relative bottom-390 right-5"
+          }
+        >
+          <ProfileTab />
+        </div>
+      )}
+      <div className={profileTab ? "relative bottom-100" : "relative bottom-0"}>
+        <Testimonials />
+        <Footer />
+      </div>
     </div>
   );
 };
