@@ -21,8 +21,10 @@ import LoginPage from "./LoginPage/LoginPage.jsx";
 import OtpVerification from "./Otp Verification/OtpVerification.jsx";
 import Profiledetails from "./Profile Details/Profiledetails.jsx";
 import Protected from "./Protected/Protected.jsx";
-import ProfilePage from "./Profile Page/ProfilePage.jsx";
-import EditProfile from "./Edit Profile/editProfile.jsx";
+import StudentProfilePage from "./Profile Page/StudentProfilePage.jsx";
+import StudentEditProfile from "./Edit Profile/StudentEditProfile.jsx";
+import RecruiterProfilePage from "./Profile Page/RecruiterProfilePage.jsx";
+import RecruiterEditProfile from "./Edit Profile/RecruiterEditProfile.jsx";
 
 const App = () => {
   return (
@@ -48,8 +50,10 @@ const App = () => {
           <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/otp-verification" element={<OtpVerification />}></Route>
           <Route path="/profile-details" element={<Profiledetails/>}></Route>
-          <Route path="/profile" element={<ProfilePage/>}></Route>
-          <Route path="/edit-profile" element={<EditProfile/>}></Route>
+          <Route path="/student-profile" element={<StudentProfilePage/>}></Route>
+          <Route path="/recruiter-profile" element={<RecruiterProfilePage/>}></Route>
+          <Route path="/student-edit-profile" element={<StudentEditProfile/>}></Route>
+          <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
         </Routes>
         {/* <ToastContainer
           position="top-right"

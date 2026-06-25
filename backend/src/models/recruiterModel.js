@@ -50,18 +50,30 @@ const recruiterSchema = new mongoose.Schema({
     type: [String],
     required: [true],
   },
+  summary: {
+    type: String,
+    required: true,
+  },
   profilePhoto: {
     type: String,
     default: "https://ik.imagekit.io/priyanshu61103/profile-logo.png",
   },
-  postedJobs: [{
+  coverPhoto: {
+    type: String,
+    default: "https://ik.imagekit.io/priyanshu61103/job.png",
+  },
+  postedJobs: [
+    {
       type: mongoose.Schema.Types.ObjectId,
       default: [],
-  }],
-  postedInternships: [{
+    },
+  ],
+  postedInternships: [
+    {
       type: mongoose.Schema.Types.ObjectId,
       default: [],
-  }],
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

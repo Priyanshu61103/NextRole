@@ -4,10 +4,12 @@ import { useSelector } from "react-redux";
 import Testimonials from "../Testimonials/Testimonials.jsx";
 import Footer from "../Footer/Footer.jsx";
 import Host from "../Host/Host.jsx";
+import ProfileTab from "../ProfileTab/ProfileTab.jsx";
 
 const About = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state)=>state.profileTab.value);
   const titleAndDescription = [
     {
       title: "Jobs & Internship search",
@@ -42,7 +44,12 @@ const About = () => {
     >
       <Navbar />
       {hostSwitch == "on" && <Host />}
-      <div className="min-w-full  min-h-screen flex flex-col gap-y-[160px] t">
+      {profileTab && (
+          <div className="flex justify-end z-100 relative bottom-117 right-5">
+            <ProfileTab />
+          </div>
+        )}
+      <div className={profileTab ? "relative bottom-85 min-w-full  min-h-screen flex flex-col gap-y-[160px]":"relative bottom-0 min-w-full  min-h-screen flex flex-col gap-y-[160px]"}>
         <div
           className={
             hostSwitch == "on"

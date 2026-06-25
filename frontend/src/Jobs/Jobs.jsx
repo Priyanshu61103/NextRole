@@ -10,10 +10,12 @@ import { getAllJobs } from "../services/jobService";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDetails } from "../Redux/Slice/detailSlice/detailSlice";
+import ProfileTab from "../ProfileTab/ProfileTab";
 const Jobs = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const details = useSelector((state) => state.details.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state)=>state.profileTab.value);
   const [jobData, setJobData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,7 +73,12 @@ const Jobs = () => {
             : "opacity-100 z-10"
         }
       >
-        <div className="flex gap-10">
+        {profileTab && (
+          <div className="flex justify-end z-100 relative bottom-7 right-5">
+            <ProfileTab />
+          </div>
+        )}
+        <div className = {profileTab ? "relative bottom-85 flex gap-10" : "relative bottom-0 flex gap-10"}>
           <Filter />
           <div className="w-full">
             <div>

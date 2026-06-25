@@ -18,8 +18,9 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { setProfileData } from "../Redux/Slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../ProfileTab/ProfileTab";
+import Host from "../Host/Host";
 
-const ProfilePage = () => {
+const StudentProfilePage = () => {
   const profileData = useSelector((state) => state.profileData.value);
   console.log(profileData);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
@@ -33,6 +34,7 @@ const ProfilePage = () => {
   if (profileData && profileData.payload) {
     const projects = profileData.payload.projects;
     const workExperience = profileData.payload.workExperience;
+
     for (let i = 0; i < projects.length; i++) {
       const projectObj = {};
       const projectArr = projects[i].split("=");
@@ -95,6 +97,7 @@ const ProfilePage = () => {
       }
       style={{ backgroundColor: "rgb(25,25,25)" }}
     >
+      {hostSwitch == "on" && <Host />}
       <Navbar />
 
       {profileData && profileData.payload && (
@@ -183,7 +186,7 @@ const ProfilePage = () => {
                           <LogOutIcon />
                         </button>
                       </div>
-                      <Link to="/edit-profile">
+                      <Link to="/student-edit-profile">
                         <button className="flex gap-x-2 bg-blue-500 p-2 rounded-3xl relative right-6 cursor-pointer">
                           <Edit />
                           <h1 className="font-semibold">Edit Profile</h1>
@@ -303,8 +306,7 @@ const ProfilePage = () => {
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Work Experience
                     </h1>
-                    {workExperienceArray.length > 0 
-                    ? (
+                    {workExperienceArray.length > 0 ? (
                       workExperienceArray.map((itr, index) => (
                         <div
                           ke={index}
@@ -367,9 +369,7 @@ const ProfilePage = () => {
                           key={index}
                           className="border-2 border-blue-500 rounded-2xl p-4 my-4"
                         >
-                          <div className="text-sm text-gray-300">
-                            {itr}
-                          </div>
+                          <div className="text-sm text-gray-300">{itr}</div>
                         </div>
                       ))
                     ) : (
@@ -388,8 +388,8 @@ const ProfilePage = () => {
         <div
           className={
             button == "on"
-              ? "flex justify-end z-100 relative bottom-445 right-5"
-              : "flex justify-end z-100 relative bottom-390 right-5"
+              ? "flex justify-end z-100 relative bottom-568 right-5"
+              : "flex justify-end z-100 relative bottom-513 right-5"
           }
         >
           <ProfileTab />
@@ -403,4 +403,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default StudentProfilePage;

@@ -36,7 +36,6 @@ const studentSchema = new mongoose.Schema({
    }, 
    resume:{
       type:String,
-      required:true
    },  
    collegeName:{
       type:String,

@@ -8,6 +8,7 @@ const ProfileTab = () => {
   const profileData = useSelector((state) => state.profileData.value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = localStorage.getItem("user");
   const logOutHandler = () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("user");
@@ -25,7 +26,7 @@ const ProfileTab = () => {
           <div className="w-full flex justify-center">
             <div>
               <div className="my-4">
-                <Link to="/profile">
+                <Link to={user == "student"?"/student-profile":"/recruiter-profile"}>
                   <img
                     src={profileData.payload.profilePhoto}
                     alt=""
@@ -42,7 +43,7 @@ const ProfileTab = () => {
                 </h1>
               </div>
               <div className="w-60 border-4 border-blue-600 rounded-2xl">
-                <Link to="/edit-profile">
+                <Link to={user == "student"?"/student-edit-profile":"/recruiter-edit-profile"}>
                   <button className="h-12 w-58 flex justify-center items-center gap-x-2 border-b-4 border-blue-600 font-semibold">
                     <Edit />
                     Edit Profile

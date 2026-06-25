@@ -7,54 +7,37 @@ import { ArrowBigRight, Edit2, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../Redux/Slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../ProfileTab/ProfileTab";
+import Host from "../Host/Host";
 
-const EditProfile = () => {
+
+const RecruiterEditProfile = () => {
   const profileData = useSelector((state) => state.profileData.value);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const profileTab = useSelector((state) => state.profileTab.value);
   const button = useSelector((state) => state.button.value);
-  const [skillsArray, setSkillsArray] = useState([]);
+  const [targetRolesArray, setTargetRolesArray] = useState([]);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [yearsOfExperience, setYearsOfExperience] = useState("");
-  const [startingYear, setStartingYear] = useState("");
-  const [yearOfGraduation, setYearOfGraduation] = useState("");
-  const [resume, setResume] = useState(undefined);
-  const [projects, setProjects] = useState([]);
-  const [workExperience, setWorkExperience] = useState([]);
-  const [collegeName, setCollegeName] = useState("");
-  const [specialization, setSpecialization] = useState("");
-  const [course, setCourse] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyLocation, SetCompanyLocation] = useState("");
+  const [companyWebsite, setCompanyWebsite] = useState("");
   const [profilePhoto, setProfilePhoto] = useState(undefined);
   const [coverPhoto, setCoverPhoto] = useState(undefined);
   const [mobileNumber, setMobileNumber] = useState("");
-  const [achievements, setAchievements] = useState([]);
   const [email, setEmail] = useState("");
   const [user, setUser] = useState("");
   const [userName, setUserName] = useState("");
-  const [cgpa, setCgpa] = useState("");
   const [summary, setSummary] = useState("");
-  const [skill, setSkill] = useState("");
-  const [skillsArrayValidity, setSkillsArrayValidity] = useState(true);
+  const [targetRole, setTargetRole] = useState("");
+  const [targetRolesArrayValidity, setTargetRolesArrayValidity] = useState(true);
   const [firstNameValidity, setFirstNameValidity] = useState(true);
   const [lastNameValidity, setLastNameValidity] = useState(true);
-  const [yearsOfExperienceValidity, setYearsOfExperienceValidity] =
-    useState(true);
-  const [startingYearValidity, setStartingYearValidity] = useState(true);
-  const [yearOfGraduationValidity, setYearOfGraduationValidity] =
-    useState(true);
   const [resumeValidity, setResumeValidity] = useState(true);
-  const [collegeNameValidity, setCollegeNameValidity] = useState(true);
-  const [specializationValidity, setSpecializationValidity] = useState(true);
-  const [courseValidity, setCourseValidity] = useState(true);
+  const [companyNameValidity, setCompanyNameValidity] = useState(true);
+  const [companyLocationValidity, SetCompanyLocationValidity] = useState(true);
+  const [companyWebsiteValidity, setCompanyWebsiteValidity] = useState(true);
   const [mobileNumberValidity, setMobileNumberValidity] = useState(true);
-  const [cgpaValidity, setCgpaValidity] = useState(true);
   const [summaryValidity, setSummaryValidity] = useState(true);
-  const [projectTitle, setProjectTitle] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [workExperienceTitle, setWorkExperienceTitle] = useState("");
-  const [workExperienceDescription, setWorkExperienceDescription] = useState("");
-  const [achievement, setAchievement] = useState(""); 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -67,44 +50,24 @@ const EditProfile = () => {
       setLastNameValidity(false);
       return false;
     }
-    if (cgpa.trim() == "") {
-      setCgpaValidity(false);
+    if (companyName.trim() == "") {
+      setCompanyNameValidity(false);
       return false;
     }
-    if (collegeName.trim() == "") {
-      setCollegeNameValidity(false);
-      return false;
-    }
-    if (specialization.trim() == "") {
-      setSpecializationValidity(false);
-      return false;
-    }
-    if (startingYear.trim() == "") {
-      setStartingYearValidity(false);
-      return false;
-    }
-    if (yearOfGraduation.trim() == "") {
-      setYearOfGraduationValidity(false);
-      return false;
-    }
-    if (yearsOfExperience.trim() == "") {
-      setYearsOfExperienceValidity(false);
+    if (companyLocation.trim() == "") {
+      SetCompanyLocationValidity(false);
       return false;
     }
     if (summary.trim() == "") {
       setSummaryValidity(false);
       return false;
     }
-    if (course.trim() == "") {
-      setCourseValidity(false);
+    if (companyWebsite.trim() == "") {
+      setCompanyWebsiteValidity(false);
       return false;
     }
-    if (skillsArray.length == 0) {
-      setSkillsArrayValidity(false);
-      return false;
-    }
-    if (resume == undefined) {
-      setResumeValidity(false);
+    if (targetRolesArray.length == 0) {
+      setTargetRolesArrayValidity(false);
       return false;
     }
     if (mobileNumber.trim() == "") {
@@ -122,39 +85,20 @@ const EditProfile = () => {
         alert("Please Fill Details Correctly");
         return;
       }
-      let projectStr = "";
-      let experienceStr = "";
-      if (projectTitle != "" && projectDescription != "") {
-        projectStr = `title=${projectTitle}=description=${projectDescription}`;
-      }
-      if (workExperienceTitle != "" && workExperienceDescription != "") {
-        experienceStr = `title=${workExperienceTitle}=description=${workExperienceDescription}`;
-      }
       const formData = new FormData();
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
       formData.append("email", email);
       formData.append("user", user);
       formData.append("userName", userName);
-      formData.append("resume", resume);
       formData.append("mobileNumber", mobileNumber);
       formData.append("summary", summary);
-      formData.append("workExperience", workExperience);
-      formData.append("projects", projects);
-      formData.append("project", projectStr);
-      formData.append("experience", experienceStr);
-      formData.append("achievements", achievements);
       formData.append("profilePhoto", profilePhoto);
       formData.append("coverPhoto", coverPhoto);
-      formData.append("collegeName", collegeName);
-      formData.append("specialization", specialization);
-      formData.append("startingYear", startingYear);
-      formData.append("yearOfGraduation", yearOfGraduation);
-      formData.append("yearsOfExperience", yearsOfExperience);
-      formData.append("skills", skillsArray);
-      formData.append("cgpa", cgpa);
-      formData.append("course", course);
-      formData.append("achievement",achievement);
+      formData.append("companyName", companyName);
+      formData.append("companyLocation", companyLocation);
+      formData.append("targetRoles", targetRolesArray);
+      formData.append("companyWebsite", companyWebsite);
       console.log(Object.fromEntries(formData));
 
       const response = await fetch(
@@ -171,7 +115,7 @@ const EditProfile = () => {
       if (data.success) {
         alert("Profile Data Edited Successfully");
         dispatch(setProfileData(data.result));
-        navigate("/profile");
+        navigate("/recruiter-profile");
         return;
       }
       alert("Profile Data Not Edited");
@@ -200,27 +144,19 @@ const EditProfile = () => {
       if (!response) return;
       if (data.success) {
         dispatch(setProfileData(data.result));
-        setSkillsArray(data.result.skills);
+        setTargetRolesArray(data.result.targetRoles);
         setFirstName(data.result.firstName);
         setLastName(data.result.lastName);
         setUser(data.result.user);
         setUserName(data.result.userName);
-        setCollegeName(data.result.collegeName);
-        setSpecialization(data.result.specialization);
-        setCourse(data.result.course);
-        setCgpa(data.result.cgpa);
+        setCompanyName(data.result.companyName);
+        setCompanyLocation(data.result.companyLocation);
+        setCompanyWebsite(data.result.companyWebsite);
         setProfilePhoto(data.result.profilePhoto);
         setCoverPhoto(data.result.coverPhoto);
-        setAchievements(data.result.achievements);
         setEmail(data.result.email);
         setSummary(data.result.summary);
         setMobileNumber(data.result.mobileNumber);
-        setWorkExperience(data.result.workExperience);
-        setProjects(data.result.projects);
-        setResume(data.result.resume);
-        setYearOfGraduation(data.result.yearOfGraduation);
-        setYearsOfExperience(data.result.yearsOfExperience);
-        setStartingYear(data.result.startingYear);
         console.log("Running...");
         return;
       }
@@ -235,37 +171,30 @@ const EditProfile = () => {
   useEffect(() => {
     if (!profileData || !profileData.payload) fetchUserData();
     else {
-      setSkillsArray(profileData.payload.skills);
+      setTargetRolesArray(profileData.payload.targetRoles);
       setFirstName(profileData.payload.firstName);
       setLastName(profileData.payload.lastName);
       setUser(profileData.payload.user);
       setUserName(profileData.payload.userName);
-      setCollegeName(profileData.payload.collegeName);
-      setSpecialization(profileData.payload.specialization);
-      setCourse(profileData.payload.course);
-      setCgpa(profileData.payload.cgpa);
+      setCompanyName(profileData.payload.companyName);
+      SetCompanyLocation(profileData.payload.companyLocation);
+      setCompanyWebsite(profileData.payload.companyWebsite);
       setProfilePhoto(profileData.payload.profilePhoto);
       setCoverPhoto(profileData.payload.coverPhoto);
-      setAchievements(profileData.payload.achievements);
       setEmail(profileData.payload.email);
       setSummary(profileData.payload.summary);
       setMobileNumber(profileData.payload.mobileNumber);
-      setWorkExperience(profileData.payload.workExperience);
-      setProjects(profileData.payload.projects);
-      setResume(profileData.payload.resume);
-      setYearOfGraduation(profileData.payload.yearOfGraduation);
-      setYearsOfExperience(profileData.payload.yearsOfExperience);
-      setStartingYear(profileData.payload.startingYear);
     }
   }, []);
   return (
     <div
       className={
-        !profileTab ? "h-fit w-full text-white" : "h-800 w-full text-white"
+        !profileTab ? "h-fit w-full text-white" : "h-fit w-full text-white"
       }
       style={{ backgroundColor: "rgb(25,25,25)" }}
     >
       <Navbar />
+      {hostSwitch == "on" && <Host />}
       <div
         className={
           hostSwitch == "on"
@@ -350,9 +279,8 @@ const EditProfile = () => {
                     <input
                       type="email"
                       id="emailId"
-                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
+                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none opacity-50"
                       value={email}
-                      onChange={(event) => setEmail(event.target.value)}
                     />
                   </div>
 
@@ -367,8 +295,7 @@ const EditProfile = () => {
                       type="username"
                       id="mobile"
                       value={userName}
-                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      onChange={(event) => setUserName(event.target.value)}
+                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none opacity-50"
                     />
                   </div>
 
@@ -382,9 +309,8 @@ const EditProfile = () => {
                     <input
                       type="text"
                       id="user"
-                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
+                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none opacity-50"
                       value={user}
-                      onChange={(event) => setUser(event.target.value)}
                     />
                   </div>
 
@@ -413,162 +339,76 @@ const EditProfile = () => {
 
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
-                      htmlFor="collegeName"
+                      htmlFor="companyName"
                       className="font-semibold text-gray-400"
                     >
-                      College Name
+                      Company Name
                     </label>
                     <input
                       type="text"
-                      id="collegeName"
+                      id="companyName"
                       className={
-                        collegeNameValidity
+                        companyNameValidity
                           ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
                           : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
                       }
-                      value={collegeName}
+                      value={companyName}
                       onChange={(event) => {
-                        setCollegeNameValidity(true);
-                        setCollegeName(event.target.value);
+                        setCompanyNameValidity(true);
+                        setCompanyName(event.target.value);
                       }}
                     />
                   </div>
 
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
-                      htmlFor="course"
+                      htmlFor="companyWebsite"
                       className="font-semibold text-gray-400"
                     >
-                      Course
+                      Company Website
                     </label>
                     <input
                       type="text"
-                      id="course"
+                      id="companyWebsite"
                       className={
-                        courseValidity
+                        companyWebsiteValidity
                           ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
                           : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
                       }
-                      value={course}
+                      value={companyWebsite}
                       onChange={(event) => {
-                        setCourseValidity(true);
-                        setCourse(event.target.value);
+                        setCompanyWebsiteValidity(true);
+                        setCompanyWebsite(event.target.value);
                       }}
                     />
                   </div>
 
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
-                      htmlFor="specialization"
+                      htmlFor="companyLocation"
                       className="font-semibold text-gray-400"
                     >
-                      Specialization
+                      Company Location
                     </label>
                     <input
                       type="text"
-                      id="specialization"
+                      id="companyLocation"
                       className={
-                        specializationValidity
+                        companyLocationValidity
                           ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
                           : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
                       }
-                      value={specialization}
+                      value={companyLocation}
                       onChange={(event) => {
-                        setSpecializationValidity(true);
-                        setSpecialization(event.target.value);
+                        SetCompanyLocationValidity(true);
+                        SetCompanyLocation(event.target.value);
                       }}
                     />
                   </div>
 
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="cgpa"
-                      className="font-semibold text-gray-400"
-                    >
-                      Cgpa
-                    </label>
-                    <input
-                      type="text"
-                      id="cgpa"
-                      className={
-                        cgpaValidity
-                          ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                          : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
-                      }
-                      value={cgpa}
-                      onChange={(event) => {
-                        setCgpaValidity(true);
-                        setCgpa(event.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="startingYear"
-                      className="font-semibold text-gray-400"
-                    >
-                      Year of Commence
-                    </label>
-                    <input
-                      type="text"
-                      id="startingYear"
-                      className={
-                        startingYearValidity
-                          ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                          : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
-                      }
-                      value={startingYear}
-                      onChange={(event) => {
-                        setStartingYearValidity(true);
-                        setStartingYear(event.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="yearOfGraduation"
-                      className="font-semibold text-gray-400"
-                    >
-                      Year of Graduation
-                    </label>
-                    <input
-                      type="text"
-                      id="yearOfGraduation"
-                      className={
-                        yearOfGraduation
-                          ? "w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                          : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
-                      }
-                      value={yearOfGraduation}
-                      onChange={(event) => {
-                        setYearOfGraduationValidity(true);
-                        setYearOfGraduation(event.target.value);
-                      }}
-                    />
-                  </div>
+                  
+               
                   <div className="h-10 w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="yearsOfExperience"
-                      className="font-semibold text-gray-400"
-                    >
-                      Years Of Experience
-                    </label>
-                    <input
-                      type="number"
-                      min="0"
-                      id="yearsOfExperience"
-                      className={
-                        yearsOfExperience
-                          ? "w-80 h-10 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                          : "w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
-                      }
-                      value={yearsOfExperience}
-                      onChange={(event) => {
-                        setFirstNameValidity(true);
-                        setYearsOfExperience(event.target.value);
-                      }}
-                    />
-
                     <div className="w-80 flex gap-x-1 mt-5">
                       <div className="w-40 flex flex-wrap gap-2">
                         <p className="font-semibold text-gray-400">
@@ -613,30 +453,8 @@ const EditProfile = () => {
                           }}
                         />
                       </div>
-
-                      <div className="w-40 flex flex-wrap gap-2">
-                        <p className="font-semibold text-gray-400">Resume</p>
-                        <label
-                          htmlFor="resume"
-                          className={
-                            resumeValidity
-                              ? "flex justify-center items-center bg-blue-500 rounded-xl  outline-none h-10 w-30 p-2 text-white border-2 border-black font-semibold mt-1 cursor-pointer relative right-1"
-                              : "flex justify-center items-center bg-blue-500 rounded-xl outline-none  h-10 w-30 p-2 text-white font-semibold mt-1 border-2 border-red-500 cursor-pointer"
-                          }
-                        >
-                          Select File
-                        </label>
-                        <input
-                          type="file"
-                          id="resume"
-                          className="hidden"
-                          onChange={(event) => {
-                            setResumeValidity(true);
-                            setResume(event.target.files[0]);
-                          }}
-                        />
-                      </div>
                     </div>
+
                   </div>
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
@@ -665,13 +483,13 @@ const EditProfile = () => {
 
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
-                      htmlFor="skills"
+                      htmlFor="targetRoles"
                       className="font-semibold text-gray-400"
                     >
-                      Skills
+                      Target Roles
                     </label>
                     <div className="h-40 w-80 flex gap-1 flex-wrap rounded-xl border-2 border-blue-500 p-2 outline-none">
-                      {skillsArray.map((itr, index) => (
+                      {targetRolesArray.map((itr, index) => (
                         <div
                           key={index}
                           className="flex justify-center items-center gap-x-1 outline-none bg-blue-400 text-black font-semibold text-xs rounded-full h-fit w-fit p-2 py-1"
@@ -680,9 +498,9 @@ const EditProfile = () => {
                           <div
                             onClick={(event) => {
                               event.preventDefault();
-                              setSkillsArrayValidity(true);
-                              const arr = skillsArray.filter((it) => it != itr);
-                              setSkillsArray(arr);
+                              setTargetRolesArrayValidity(true);
+                              const arr = targetRolesArray.filter((it) => it != itr);
+                              setTargetRolesArray(arr);
                             }}
                           >
                             <X size={12} />
@@ -692,94 +510,22 @@ const EditProfile = () => {
                     </div>
                     <input
                       type="text"
-                      id="skills"
+                      id="targetRoles"
                       className={
-                        skillsArrayValidity
+                        targetRolesArrayValidity
                           ? "h-10 w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
                           : "h-10 w-80 border-2 border-red-500 rounded-lg p-2 outline-none"
                       }
-                      value={skill}
-                      onChange={(event) => setSkill(event.target.value)}
+                      value={targetRole}
+                      onChange={(event) => setTargetRole(event.target.value)}
                       onKeyDown={(event) => {
-                        if (event.key == "Enter" && skill.trim() != "") {
+                        if (event.key == "Enter" && targetRole.trim() != "") {
                           event.preventDefault();
-                          setSkillsArray([...skillsArray, skill]);
-                          setSkill("");
+                          setTargetRolesArray([...targetRolesArray, targetRole]);
+                          setTargetRole("");
                         }
                       }}
                     />
-                  </div>
-
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="workExperience"
-                      className="font-semibold text-gray-400"
-                    >
-                      Work Experience
-                    </label>
-                    <input
-                      type="text"
-                      value={workExperienceTitle}
-                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      onChange={(event) =>
-                        setWorkExperienceTitle(event.target.value)
-                      }
-                    />
-                    <textarea
-                      type="text"
-                      id="workExperience"
-                      rows="8"
-                      cols="80"
-                      className="border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      value={workExperienceDescription}
-                      onChange={(event) => {
-                        setWorkExperienceDescription(event.target.value);
-                      }}
-                    ></textarea>
-                  </div>
-
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="projects"
-                      className="font-semibold text-gray-400"
-                    >
-                      Projects
-                    </label>
-                    <input
-                      type="text"
-                      value={projectTitle}
-                      className="w-80 border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      onChange={(event) => setProjectTitle(event.target.value)}
-                    />
-                    <textarea
-                      type="text"
-                      id="projects"
-                      rows="5"
-                      cols="80"
-                      className="border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      value={projectDescription}
-                      onChange={(event) => {
-                        setProjectDescription(event.target.value);
-                      }}
-                    ></textarea>
-                  </div>
-
-                  <div className="w-80 flex flex-wrap gap-2">
-                    <label
-                      htmlFor="achievements"
-                      className="font-semibold text-gray-400"
-                    >
-                      Achievements
-                    </label>
-                    <textarea
-                      type="text"
-                      id="achievements"
-                      rows="8"
-                      cols="80"
-                      className="border-2 border-blue-500 rounded-lg p-2 outline-none"
-                      value={achievement}
-                      onChange={(event) => setAchievement(event.target.value)}
-                    ></textarea>
                   </div>
 
                   <div className="w-160 flex flex-col flex-wrap gap-2 justify-end items-end">
@@ -800,9 +546,14 @@ const EditProfile = () => {
       {profileTab && (
         <div
           className={
+            hostSwitch == "on"?
             button == "on"
-              ? "flex justify-end z-100 relative bottom-480 right-5"
-              : "flex justify-end z-100 relative bottom-430 right-5"
+              ? "flex justify-end z-100 relative bottom-375 right-5"
+              : "flex justify-end z-100 relative bottom-325 right-5"
+            :
+            button == "on"
+              ? "flex justify-end z-100 relative bottom-315 right-5"
+              : "flex justify-end z-100 relative bottom-265 right-5"  
           }
         >
           <ProfileTab />
@@ -816,4 +567,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default RecruiterEditProfile;
