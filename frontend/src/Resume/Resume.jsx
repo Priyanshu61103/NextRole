@@ -7,10 +7,12 @@ import Host from "../Host/Host";
 import { analyzeResume } from "../services/resumeService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import ProfileTab from "../ProfileTab/ProfileTab";
 
 const Resume = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const [submitResume, setSubmitResume] = useState(0);
   const [resumeAnalyzerData, setresumeAnalyzerData] = useState({
     resume: "",
@@ -21,42 +23,63 @@ const Resume = () => {
     submitResume == 1 ? setSubmitResume(0) : setSubmitResume(1);
     console.log(submitResume);
   };
-  
+
   const handler = (e) => {
-     setresumeAnalyzerData({ ...resumeAnalyzerData, resume : e.target.files[0]});     
-  }
-  
-  const submitHandler = async(e) => {
+    setresumeAnalyzerData({ ...resumeAnalyzerData, resume: e.target.files[0] });
+  };
+
+  const submitHandler = async (e) => {
     e.preventDefault();
     console.log(resumeAnalyzerData);
     const responseMessage = await analyzeResume(resumeAnalyzerData);
-    toast.success("Resume Analyzed Successfully")
+    toast.success("Resume Analyzed Successfully");
     console.log(responseMessage);
 
     setresumeAnalyzerData({
-      resume:""
+      resume: "",
     });
-    
-    navigate("/resume-feedback");
 
-  }
+    navigate("/resume-feedback");
+  };
   return (
     <div
-      className="h-845 w-full text-white"
+      className="h-fit w-full text-white"
       style={{ backgroundColor: "rgb(25,25,25)" }}
     >
       <Navbar />
       {hostSwitch == "on" && <Host />}
-
+      {profileTab && (
+        <div
+          className={
+            hostSwitch == "on"
+              ? button == "on"
+                ? "flex justify-end z-100 relative bottom-117 right-5"
+                : "flex justify-end z-100 relative bottom-67 right-5"
+              : button == "on"
+                ? "flex justify-end z-100 relative bottom-57 right-5"
+                : "flex justify-end z-100 relative bottom-7 right-5"
+          }
+        >
+          <ProfileTab />
+        </div>
+      )}
       <div
         className={
           hostSwitch == "on"
             ? button == "on"
-              ? "relative bottom-115 opacity-25 z-10 flex gap-10 m-7 mx-20"
-              : "relative bottom-65 opacity-25 z-10 flex gap-10 m-7 mx-20"
+              ? profileTab
+                ? "relative bottom-200 opacity-25 z-10 flex gap-10 m-7 mx-20"
+                : "relative bottom-115 opacity-25 z-10 flex gap-10 m-7 mx-20"
+              : profileTab
+                ? "relative bottom-155 opacity-25 z-10 flex gap-10 m-7 mx-20"
+                : "relative bottom-65 opacity-25 z-10 flex gap-10 m-7 mx-20"
             : button == "on"
-            ? "relative bottom-55 opacity-25 z-10 flex gap-10 m-7 mx-20"
-            : "opacity-100 z-10 flex gap-10 m-7 mx-20"
+              ? profileTab
+                ? "relative bottom-140 opacity-25 z-10 flex gap-10 m-7 mx-20"
+                : "relative bottom-55 opacity-25 z-10 flex gap-10 m-7 mx-20"
+              : profileTab
+                ? "opacity-100 relative bottom-90 z-10 flex gap-10 m-7 mx-20"
+                : "opacity-100 z-10 flex gap-10 m-7 mx-20"
         }
       >
         <div className="w-150">
@@ -99,8 +122,13 @@ const Resume = () => {
             </h1>
             <div className="h-100 w-200 flex justify-center items-center">
               <form onSubmit={submitHandler}>
-                <input type="file" name="resume" className="border-2 border-blue-500 h-10 w-100 rounded-xl relative right-10" onChange={handler}/>
-                <button className="h-15 w-55 bg-blue-500 rounded-xl p-5 flex gap-x-1 justify-center items-center relative left-10 top-10" >
+                <input
+                  type="file"
+                  name="resume"
+                  className="border-2 border-blue-500 h-10 w-100 rounded-xl relative right-10"
+                  onChange={handler}
+                />
+                <button className="h-15 w-55 bg-blue-500 rounded-xl p-5 flex gap-x-1 justify-center items-center relative left-10 top-10">
                   <h1 className="text-md text-black font-bold">Submit</h1>
                 </button>
               </form>
@@ -113,11 +141,19 @@ const Resume = () => {
         className={
           hostSwitch === "on"
             ? button === "on"
-              ? "flex justify-center relative bottom-81 text-gray-300 text-xl opacity-25"
-              : "flex justify-center relative bottom-65 text-gray-300 text-xl opacity-25"
+              ? profileTab
+                ? "flex justify-center relative bottom-180 text-gray-300 text-xl opacity-25"
+                : "flex justify-center relative bottom-110 text-gray-300 text-xl opacity-25"
+              : profileTab
+                ? "flex justify-center relative bottom-145 text-gray-300 text-xl opacity-25"
+                : "flex justify-center relative bottom-65 text-gray-300 text-xl opacity-25"
             : button === "on"
-            ? "flex justify-center text-gray-300 relative bottom-21 text-xl"
-            : "flex justify-center text-gray-300 text-xl"
+              ? profileTab
+                ? "flex justify-center text-gray-300 relative bottom-121 text-xl opacity-25"
+                : "flex justify-center text-gray-300 relative bottom-36 text-xl opacity-25"
+              : profileTab
+                ? "flex justify-center relative bottom-80 text-gray-300 text-xl"
+                : "flex justify-center text-gray-300 text-xl"
         }
       >
         <div className="h-100 w-180">
@@ -149,11 +185,19 @@ const Resume = () => {
         className={
           hostSwitch === "on"
             ? button === "on"
-              ? "relative bottom-81 opacity-25"
-              : "relative bottom-65 opacity-25"
+              ? profileTab
+                ? "relative bottom-180 text-gray-300 text-md opacity-25"
+                : "relative bottom-110 text-gray-300 text-md opacity-25"
+              : profileTab
+                ? "relative bottom-145 text-gray-300 text-md opacity-25"
+                : "relative bottom-65 text-gray-300 text-md opacity-25"
             : button === "on"
-            ? "relative bottom-21"
-            : "none"
+              ? profileTab
+                ? "text-gray-300 relative bottom-121 text-md opacity-25"
+                : "text-gray-300 relative bottom-36 text-md opacity-25"
+              : profileTab
+                ? "relative bottom-80 text-gray-300 text-md"
+                : "text-gray-300 text-md"
         }
       >
         <div className="flex justify-center mb-10">
@@ -313,9 +357,28 @@ const Resume = () => {
           </div>
         </div>
       </div>
-
-      <Testimonials />
-      <Footer />
+      <div
+        className={
+          hostSwitch === "on"
+            ? button === "on"
+              ? profileTab
+                ? "relative bottom-65 text-gray-300 text-lg opacity-25"
+                : "relative bottom-0 text-gray-300 text-lg opacity-25"
+              : profileTab
+                ? "relative bottom-85 text-gray-300 text-lg opacity-25"
+                : "relative bottom-5 text-gray-300 text-lg opacity-25"
+            : button === "on"
+              ? profileTab
+                ? "text-gray-300 relative bottom-71 text-lg opacity-25"
+                : "text-gray-300 relative top-15 text-lg opacity-25"
+              : profileTab
+                ? "relative bottom-80 text-gray-300 text-lg"
+                : "text-gray-300 text-lg"
+        }
+      >
+        <Testimonials />
+        <Footer />
+      </div>
     </div>
   );
 };

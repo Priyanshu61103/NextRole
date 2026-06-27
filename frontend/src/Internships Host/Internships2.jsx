@@ -9,9 +9,11 @@ import Host from "../Host/Host";
 import { createInternship } from "../services/internshipService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import ProfileTab from "../ProfileTab/ProfileTab";
 const Jobs2 = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const dispatch = useDispatch();
   dispatch(() => setHostSwitch());
   const [title, setTitle] = useState("");
@@ -87,15 +89,38 @@ const Jobs2 = () => {
       >
         <Navbar />
         {hostSwitch == "on" && <Host />}
+        {profileTab && (
+          <div
+            className={
+              hostSwitch == "on"
+                ? button == "on"
+                  ? "flex justify-end z-100 relative bottom-117 right-5"
+                  : "flex justify-end z-100 relative bottom-67 right-5"
+                : button == "on"
+                  ? "flex justify-end z-100 relative bottom-57 right-5"
+                  : "flex justify-end z-100 relative bottom-7 right-5"
+            }
+          >
+            <ProfileTab />
+          </div>
+        )}
         <div
           className={
             hostSwitch == "on"
               ? button == "on"
-                ? "relative bottom-76 opacity-25 z-10"
-                : "relative bottom-60 opacity-25 z-10"
+                ? profileTab
+                  ? "relative bottom-194 opacity-25 z-10"
+                  : "relative bottom-110 opacity-25 z-10"
+                : profileTab
+                  ? "relative bottom-144 opacity-25 z-10"
+                  : "relative bottom-60 opacity-25 z-10"
               : button == "on"
-                ? "relative bottom-16 opacity-100 z-10"
-                : "opacity-100 z-10"
+                ? profileTab
+                  ? "relative bottom-134 opacity-100 z-10"
+                  : "relative bottom-50 opacity-25 z-10"
+                : profileTab
+                  ? "relative bottom-84 opacity-100 z-10"
+                  : "opacity-100 z-10"
           }
         >
           <h1 className="text-blue-400 font-semibold text-4xl ml-15">

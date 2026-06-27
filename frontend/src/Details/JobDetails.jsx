@@ -4,11 +4,13 @@ import Testimonials from "../Testimonials/Testimonials";
 import Footer from "../Footer/Footer";
 import { useSelector } from "react-redux";
 import Host from "../Host/Host";
+import ProfileTab from "../ProfileTab/ProfileTab";
 
 const Details = () => {
   const details = useSelector((state) => state.details.value);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
+  const profileTab = useSelector((state)=>state.profileTab.value);
   console.log(details);
   let str = details.payload.skills;
   let arr = [];
@@ -31,15 +33,28 @@ const Details = () => {
     >
       <Navbar />
       {hostSwitch == "on" && <Host />}
+     {profileTab && (
+          <div  className={
+          hostSwitch == "on"
+            ? button == "on"
+              ? "flex justify-end z-100 relative bottom-117 right-5"
+              : "flex justify-end z-100 relative bottom-67 right-5"
+            : button == "on"
+            ? "flex justify-end z-100 relative bottom-57 right-5"
+            : "flex justify-end z-100 relative bottom-7 right-5"
+        }>
+            <ProfileTab />
+          </div>
+        )} 
       <div className={
           hostSwitch == "on"
             ? button == "on"
-              ? "relative bottom-110 opacity-25 z-10"
-              : "relative bottom-60 opacity-25 z-10"
+              ? profileTab ?"relative bottom-207 opacity-25 z-10":"relative bottom-122 z-10 opacity-25"
+              : profileTab ?"relative bottom-157 opacity-25 z-10":"relative bottom-72 z-10 opacity-25"
             : button == "on"
-            ? "relative bottom-50 z-10 opacity-25"
-            : "opacity-100 z-10"
-        }>
+            ? profileTab ?"relative bottom-147 z-10 opacity-25":"relative bottom-62 opacity-25 z-10"
+            : profileTab ?"relative bottom-97 z-10":"relative bottom-12 z-10"
+        }> 
         <div className="relative top-25">
           <h1 className="text-blue-500 text-center text-2xl font-bold">
             {details.payload.title}

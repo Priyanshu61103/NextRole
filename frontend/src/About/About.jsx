@@ -9,7 +9,7 @@ import ProfileTab from "../ProfileTab/ProfileTab.jsx";
 const About = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
-  const profileTab = useSelector((state)=>state.profileTab.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const titleAndDescription = [
     {
       title: "Jobs & Internship search",
@@ -40,16 +40,32 @@ const About = () => {
   return (
     <div
       style={{ backgroundColor: "rgb(25,25,25)" }}
-      className="min-w-full  min-h-screen"
+      className="min-w-full h-fit"
     >
       <Navbar />
       {hostSwitch == "on" && <Host />}
       {profileTab && (
-          <div className="flex justify-end z-100 relative bottom-117 right-5">
-            <ProfileTab />
-          </div>
-        )}
-      <div className={profileTab ? "relative bottom-85 min-w-full  min-h-screen flex flex-col gap-y-[160px]":"relative bottom-0 min-w-full  min-h-screen flex flex-col gap-y-[160px]"}>
+        <div
+          className={
+            hostSwitch == "on"
+              ? button == "on"
+                ? "flex justify-end z-100 relative bottom-117 right-5"
+                : "flex justify-end z-100 relative bottom-67 right-5"
+              : button == "on"
+                ? "flex justify-end z-100 relative bottom-57 right-5"
+                : "flex justify-end z-100 relative bottom-7 right-5"
+          }
+        >
+          <ProfileTab />
+        </div>
+      )}
+      <div
+        className={
+          profileTab
+            ? "relative bottom-85 min-w-full  min-h-screen flex flex-col gap-y-[160px]"
+            : "relative bottom-0 min-w-full  min-h-screen flex flex-col gap-y-[160px]"
+        }
+      >
         <div
           className={
             hostSwitch == "on"
@@ -57,8 +73,8 @@ const About = () => {
                 ? "relative bottom-90 opacity-25 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
                 : "relative bottom-40 opacity-25 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
               : button == "on"
-              ? "relative bottom-30 opacity-25 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
-              : "relative top-20 opacity-100 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
+                ? "relative bottom-30 opacity-25 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
+                : "relative top-20 opacity-100 z-10 mx-auto flex flex-col-reverse md:flex-row md:justify-between md:items-center gap-8 md:gap-10"
           }
         >
           <div className="text-blue-500 mx-8 md:min-w-[40%] flex flex-col font-medium gap-y-6">
@@ -80,6 +96,15 @@ const About = () => {
             </div>
           </div>
         </div>
+        <div className={
+            hostSwitch == "on"
+              ? button == "on"
+                ? "relative bottom-90 opacity-25"
+                : "relative bottom-45 opacity-25"
+              : button == "on"
+                ? "relative bottom-35 opacity-25"
+                : "opacity-100"
+          }>
         <div className="w-[80%] flex justify-evenly items-center mx-auto">
           <div className="w-[50%] h-[600px]  rounded-2xl  border-t-blue-500 border-r-blue-400  border-b-blue-400 border-b-[8px] border-2 border-l-[8px] border-l-blue-400 flex flex-col justify-center items-center">
             <h1 className="text-[3rem] text-center  text-blue-500">
@@ -162,8 +187,19 @@ const About = () => {
             </div>
           </div>
         </div>
-        <Testimonials />
-        <Footer />
+        </div>
+        <div className={
+            hostSwitch == "on"
+              ? button == "on"
+                ? "relative top-70"
+                : "relative top-30"
+              : button == "on"
+                ? "relative top-10"
+                : "relative bottom-30"
+          }>
+          <Testimonials />
+          <Footer />
+        </div>
       </div>
     </div>
   );
