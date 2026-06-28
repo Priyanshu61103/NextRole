@@ -17,3 +17,4 @@ export const resumeUpload = multer({ storage: storage("resume") });
 export const jobUpload = multer({ storage: storage("job-logo") });
 export const internshipUpload = multer({ storage: storage("internship-logo") });
 export const editProfileUpload = multer({ storage: storage("edit-profile") });
+export const resumeAnalysisUpload = multer({ storage: storage("resume-analysis") });

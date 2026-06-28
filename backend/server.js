@@ -7,6 +7,7 @@ import jobRouter from "./src/routes/jobRoute.js";
 import internshipRouter from "./src/routes/internshipRoute.js";
 import cookieParser from "cookie-parser";
 import profileRouter from "./src/routes/profileRoute.js";
+import resumeAnalysisRouter from "./src/routes/resumeAnalysisRoute.js";
 
 const app = express(); 
 const PORT = process.env.PORT;
@@ -25,6 +26,7 @@ app.use(authRouter);
 app.use(jobRouter);
 app.use(internshipRouter);
 app.use(profileRouter);
+app.use(resumeAnalysisRouter);
 app.listen(PORT,()=>{
     console.log("Server is running on Port",PORT);
 });
