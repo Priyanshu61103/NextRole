@@ -10,7 +10,6 @@ import Jobs2 from "./Jobs Host/Jobs2";
 import Internships2 from "./Internships Host/Internships2";
 import Resume from "./Resume/Resume.jsx";
 import Interview from "./Interview/Interview.jsx";
-import AiSetup from "./Interview/Aisetup.jsx";
 import About from "./About/About.jsx";
 import ResumeFeedBack from "./Resume/ResumeFeedBack.jsx";
 import "react-toastify/dist/ReactToastify.css";
@@ -25,6 +24,7 @@ import StudentProfilePage from "./Profile Page/StudentProfilePage.jsx";
 import StudentEditProfile from "./Edit Profile/StudentEditProfile.jsx";
 import RecruiterProfilePage from "./Profile Page/RecruiterProfilePage.jsx";
 import RecruiterEditProfile from "./Edit Profile/RecruiterEditProfile.jsx";
+import InterviewRoom from "./Interview/InterviewRoom.jsx";
 
 const App = () => {
   return (
@@ -38,7 +38,6 @@ const App = () => {
           <Route path="/jobhost" element={<Protected><Jobs2 /></Protected>}></Route>
           <Route path="/internshiphost" element={<Protected><Internships2 /></Protected>}></Route>
           <Route path="/aiinterview" element={<Protected><Interview /></Protected>}></Route>
-          <Route path="/aisetup" element={<Protected><AiSetup /></Protected>}></Route>
           <Route path="/jobdetails" element={<Protected><JobDetails /></Protected>}></Route>
           <Route
             path="/internshipdetails"
@@ -54,6 +53,7 @@ const App = () => {
           <Route path="/recruiter-profile" element={<RecruiterProfilePage/>}></Route>
           <Route path="/student-edit-profile" element={<StudentEditProfile/>}></Route>
           <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
+          <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
         </Routes>
         {/* <ToastContainer
           position="top-right"

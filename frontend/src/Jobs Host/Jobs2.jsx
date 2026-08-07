@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setHostSwitch } from "../Redux/Slice/hostSlice/hostSlice";
 import Host from "../Host/Host";
-import { createJob } from "../services/jobService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ProfileTab from "../ProfileTab/ProfileTab";

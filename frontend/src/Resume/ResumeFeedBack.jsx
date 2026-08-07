@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navbar/Navbar.jsx";
-import AtsScore from "./AtsScore.jsx";
 import Testimonials from "../Testimonials/Testimonials.jsx";
 import Footer from "../Footer/Footer.jsx";
 import { Check, Code, Lightbulb, X } from "lucide-react";
@@ -129,7 +128,7 @@ const ResumeFeedBack = () => {
                     </div>
                     Skills Detected
                   </div>
-                  <div className="w-220 flex gap-x-5">
+                  <div className="w-220 flex flex-wrap gap-x-5">
                     {info.analysis.skills.map((itr, index) => (
                       <div className="h-fit w-fit bg-yellow-300  font-semibold text-black p-2 rounded-2xl my-5 text-lg flex justify-center items-center gap-x-4">
                         <div>{itr}</div>

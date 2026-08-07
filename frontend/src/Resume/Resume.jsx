@@ -4,7 +4,6 @@ import Testimonials from "../Testimonials/Testimonials";
 import Footer from "../Footer/Footer";
 import { useSelector } from "react-redux";
 import Host from "../Host/Host";
-import { analyzeResume } from "../services/resumeService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import ProfileTab from "../ProfileTab/ProfileTab";

@@ -6,7 +6,6 @@ import Filter from "../Filter/Filter";
 import { useSelector } from "react-redux";
 import Host from "../Host/Host";
 import { Link } from "react-router-dom";
-import { getAllJobs } from "../services/jobService";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDetails } from "../Redux/Slice/detailSlice/detailSlice";

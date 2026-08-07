@@ -5,7 +5,6 @@ import Footer from "../Footer/Footer";
 import Filter from "../Filter/Filter";
 import { useSelector } from "react-redux";
 import Host from "../Host/Host";
-import { getAllInternships } from "../services/internshipService";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDetails } from "../Redux/Slice/detailSlice/detailSlice";

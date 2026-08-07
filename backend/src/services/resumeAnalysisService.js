@@ -2,7 +2,7 @@ import Groq from "groq-sdk";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
-export const analyzeResumeService = async (resume) => {
+export const analyzeResumeService = async (resumeText) => {
   try {
     const prompt = `You are an expert resume reviewer with 10+ years of experience in tech hiring.
 
@@ -17,7 +17,7 @@ export const analyzeResumeService = async (resume) => {
     - experienceLevel: one of "fresher", "junior", "mid", "senior"
 
     Resume:
-    ${resume}
+    ${resumeText}
 
     Rules:
     - Respond with ONLY valid JSON, nothing else
@@ -38,7 +38,6 @@ export const analyzeResumeService = async (resume) => {
       response_format: { type: "json_object" },
       temperature:0
     });
-
     return JSON.parse(result.choices[0].message.content);
   } catch (error) {
     console.log("Error:", error);

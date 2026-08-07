@@ -7,7 +7,7 @@ const Host = () => {
   return (
     <div>
         <div
-          className={button==="on"?"relative left-210 bottom-60 h-60 w-100 pt-2 p-5 rounded-xl flex justify-center flex-wrap z-20":"relative left-210 bottom-10 h-60 w-100 pt-2 p-5 rounded-xl flex justify-center flex-wrap z-20"}
+          className={button==="on"?"relative left-210 bottom-60 h-60 w-100 pt-2 p-5 rounded-xl flex justify-center flex-wrap z-30":"relative left-210 bottom-10 h-60 w-100 pt-2 p-5 rounded-xl flex justify-center flex-wrap z-30"}
           style={{ backgroundColor: "rgb(20, 20 , 20)" }}
         >
           <Link to={"/jobhost"}><div className="h-30 w-95 text-gray-200 pl-2 p-5 flex items-center border-b-2 gap-x-2 border-blue-400">

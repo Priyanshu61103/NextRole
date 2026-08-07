@@ -5,6 +5,7 @@ import resumeReducer from '../Slice/resumeSlice/resumeSlice'
 import detailReducer from '../Slice/detailSlice/detailSlice'
 import profileTabReducer from "../Slice/profileTabSlice/profileTabSlice"
 import profileDataReducer from "../Slice/profileDataSlice/profileDataSlice"
+import resumeInputButtonReducer from '../Slice/ResumeInputButtonSlice/resumeInputButtonSlice'
 export const store = configureStore({
   reducer: {
     hostSwitch: hostReducer,
@@ -12,6 +13,7 @@ export const store = configureStore({
     resumeInput:resumeReducer,
     details:detailReducer,
     profileTab:profileTabReducer,
-    profileData:profileDataReducer
+    profileData:profileDataReducer,
+    resumeInputButton:resumeInputButtonReducer
   },
 })
