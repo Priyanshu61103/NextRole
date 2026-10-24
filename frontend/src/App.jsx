@@ -1,37 +1,43 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./Home";
-import Jobs from "./Jobs/Jobs";
-import Internships from "./Internships/Internships";
-import { store } from "./Redux/Store/store";
+import Home from "./pages/Home.jsx";
+import Jobs from "./pages/Jobs.jsx";
+import Internships from "./pages/Internships.jsx";
+import { store } from "./utils/redux/store/store";
 import { Provider } from "react-redux";
 import { ToastContainer } from "react-toastify";
-import Jobs2 from "./Jobs Host/Jobs2";
-import Internships2 from "./Internships Host/Internships2";
-import Resume from "./Resume/Resume.jsx";
-import Interview from "./Interview/Interview.jsx";
-import About from "./About/About.jsx";
-import ResumeFeedBack from "./Resume/ResumeFeedBack.jsx";
+import Jobs2 from "./pages/Jobs2.jsx";
+import Internships2 from "./pages/Internships2.jsx";
+import Resume from "./pages/Resume.jsx";
+import Interview from "./pages/Interview.jsx";
+import About from "./pages/About.jsx";
+import ResumeFeedBack from "./pages/ResumeFeedBack.jsx";
 import "react-toastify/dist/ReactToastify.css";
-import JobDetails from "./Details/JobDetails.jsx";
-import InternshipDetails from "./Details/InternshipDetails.jsx";
-import SignUpPage from "./SignUpPage/SignUpPage.jsx";
-import LoginPage from "./LoginPage/LoginPage.jsx";
-import OtpVerification from "./Otp Verification/OtpVerification.jsx";
-import Profiledetails from "./Profile Details/Profiledetails.jsx";
-import Protected from "./Protected/Protected.jsx";
-import StudentProfilePage from "./Profile Page/StudentProfilePage.jsx";
-import StudentEditProfile from "./Edit Profile/StudentEditProfile.jsx";
-import RecruiterProfilePage from "./Profile Page/RecruiterProfilePage.jsx";
-import RecruiterEditProfile from "./Edit Profile/RecruiterEditProfile.jsx";
-import InterviewRoom from "./Interview/InterviewRoom.jsx";
+import JobDetails from "./pages/JobDetails.jsx";
+import InternshipDetails from "./pages/InternshipDetails.jsx";
+import OtpVerification from "./pages/OtpVerification.jsx";
+import Profiledetails from "./pages/Profiledetails.jsx";
+import Protected from "./components/Protected.jsx";
+import StudentProfilePage from "./pages/StudentProfilePage.jsx";
+import StudentEditProfile from "./pages/StudentEditProfile.jsx";
+import RecruiterProfilePage from "./pages/RecruiterProfilePage.jsx";
+import RecruiterEditProfile from "./pages/RecruiterEditProfile.jsx";
+import InterviewRoom from "./pages/InterviewRoom.jsx";
 
 const App = () => {
   return (
     <Provider store={store}>
       <Router>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          closeOnClick
+          pauseOnHover
+          draggable
+          theme="dark"
+        />
         <Routes>
-          <Route path="/home" element={<Protected><Home /></Protected>}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/jobpostings" element={<Protected><Jobs /></Protected>}></Route>
           <Route path="/internships" element={<Protected><Internships /></Protected>}></Route>
           <Route path="/resume" element={<Protected><Resume /></Protected>}></Route>
@@ -43,10 +49,8 @@ const App = () => {
             path="/internshipdetails"
             element={<Protected><InternshipDetails /></Protected>}
           ></Route>
-          <Route path="/about" element={<Protected><About /></Protected>}></Route>
+          <Route path="/about" element={<About />}></Route>
           <Route path="/resume-feedback" element={<Protected><ResumeFeedBack /></Protected>}></Route>
-          <Route path="/" element={<LoginPage />}></Route>
-          <Route path="/signup" element={<SignUpPage />}></Route>
           <Route path="/otp-verification" element={<OtpVerification />}></Route>
           <Route path="/profile-details" element={<Profiledetails/>}></Route>
           <Route path="/student-profile" element={<StudentProfilePage/>}></Route>
@@ -55,16 +59,6 @@ const App = () => {
           <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
           <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
         </Routes>
-        {/* <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnHover
-          draggable
-          theme="dark"
-        /> */}
       </Router>
     </Provider>
   );
