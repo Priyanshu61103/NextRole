@@ -86,7 +86,7 @@ export async function saveProfileController(req, resp) {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     data.password = hashedPassword;
-    if (data.user == "student") {
+    if (data.user == "candidate") {
       let skillsArray = data.skills.split(",");
       data.skills = skillsArray;
       const result = await studentModel.create(data);
@@ -144,7 +144,7 @@ export async function saveProfileController(req, resp) {
 export async function loginVerificationController(req, resp) {
   try {
     const data = req.body;
-    if (data.user == "student") {
+    if (data.user == "candidate") {
       const result = await studentModel.findOne({ email: data.email });
       if (result) {
         let flag = false;

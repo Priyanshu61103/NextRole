@@ -490,7 +490,7 @@ const RecruiterEditProfile = () => {
                       Target Roles
                     </label>
                     <div className="h-40 w-80 flex gap-1 flex-wrap rounded-xl border-2 border-blue-500 p-2 outline-none">
-                      {targetRolesArray.map((itr, index) => (
+                      {targetRolesArray && targetRolesArray.map((itr, index) => (
                         <div
                           key={index}
                           className="flex justify-center items-center gap-x-1 outline-none bg-blue-400 text-black font-semibold text-xs rounded-full h-fit w-fit p-2 py-1"

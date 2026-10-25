@@ -7,7 +7,7 @@ export async function userDataController(req, resp) {
   try {
     const { userName } = req.body;
     const { user } = req.body;
-    if (user == "student") {
+    if (user == "candidate") {
       const result = await studentModel.findOne({ userName });
       if (result) {
         return resp.status(200).send({
@@ -50,7 +50,7 @@ export async function editProfileController(req, resp) {
     const data = req.body;
     const files = req.files;
 
-    if (data.user == "student") {
+    if (data.user == "candidate") {
       const result2 = await studentModel.findOne({ userName: data.userName });
 
       if (result2) {

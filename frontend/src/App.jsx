@@ -23,6 +23,9 @@ import StudentEditProfile from "./pages/StudentEditProfile.jsx";
 import RecruiterProfilePage from "./pages/RecruiterProfilePage.jsx";
 import RecruiterEditProfile from "./pages/RecruiterEditProfile.jsx";
 import InterviewRoom from "./pages/InterviewRoom.jsx";
+import SignUp from "./pages/SignUp.jsx";
+import Login from "./pages/Login.jsx";
+import AccountType from "./pages/AccountType.jsx";
 
 const App = () => {
   return (
@@ -38,6 +41,9 @@ const App = () => {
         />
         <Routes>
           <Route path="/" element={<Home />}></Route>
+          <Route path="/signup" element={<SignUp />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/account-type" element={<AccountType/>}/>
           <Route path="/jobpostings" element={<Protected><Jobs /></Protected>}></Route>
           <Route path="/internships" element={<Protected><Internships /></Protected>}></Route>
           <Route path="/resume" element={<Protected><Resume /></Protected>}></Route>
@@ -53,9 +59,9 @@ const App = () => {
           <Route path="/resume-feedback" element={<Protected><ResumeFeedBack /></Protected>}></Route>
           <Route path="/otp-verification" element={<OtpVerification />}></Route>
           <Route path="/profile-details" element={<Profiledetails/>}></Route>
-          <Route path="/student-profile" element={<StudentProfilePage/>}></Route>
+          <Route path="/candidate-profile" element={<StudentProfilePage/>}></Route>
           <Route path="/recruiter-profile" element={<RecruiterProfilePage/>}></Route>
-          <Route path="/student-edit-profile" element={<StudentEditProfile/>}></Route>
+          <Route path="/candidate-edit-profile" element={<StudentEditProfile/>}></Route>
           <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
           <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
         </Routes>

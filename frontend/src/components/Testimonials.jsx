@@ -26,7 +26,7 @@ const Testimonials = () => {
                   Go-to platform for students and freshers
                 </h1>
                 <p className="text-gray-300 text-sm">
-                  I landed my First Job from SkillSync! This app has
+                  I landed my First Job from NextRole! This app has
                   opportunities for every student and is a must-have for
                   students looking to build their careers.
                 </p>
@@ -56,7 +56,7 @@ const Testimonials = () => {
                   I applied to Google and got the job! It was my dream. I wanted
                   to get into tech but I was from an electrical background. I
                   learned the skills, which came in handy in my interviews.
-                  Thanks to SkillSync, I was able to explain the concepts and
+                  Thanks to NextRole, I was able to explain the concepts and
                   applications well. They helped me with everything.
                 </p>
                 <div className="h-0.5 w-80 bg-gray-300 opacity-25 relative top-17"></div>
@@ -84,7 +84,7 @@ const Testimonials = () => {
                 <p className="text-gray-300 text-sm">
                   I had no idea how to enter the corporate world, what kind of
                   job would be a good fit for me, or where to even start.
-                  SkillSync guided me through the entire process, helping me
+                  NextRole guided me through the entire process, helping me
                   build the right skills and confidence. Thanks to their support
                   and resources, I was able to secure an internship, which
                   eventually led to a job offer from Flipkart.
@@ -116,7 +116,7 @@ const Testimonials = () => {
                 </h1>
                 <p className="text-gray-300 text-sm">
                   After facing disappointments from campus placement rejections,
-                  I turned to SkillSync. I learned valuable skills, how to crack
+                  I turned to NextRole. I learned valuable skills, how to crack
                   interviews, and how to make a strong resume through their
                   guidance. A few months later, I secured a data science
                   internship with Microsoft. It's my first job after graduation.
@@ -147,7 +147,7 @@ const Testimonials = () => {
                 </h1>
                 <p className="text-gray-300 text-sm">
                   What stood out for me was the quick resolution of my doubts
-                  and queries. SkillSync gave me all the support I needed to
+                  and queries. NextRole gave me all the support I needed to
                   restart my career - from sharing placement opportunities to
                   interview preparation.
                 </p>

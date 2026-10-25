@@ -7,7 +7,7 @@ const dbConnection = async () => {
     await mongoose.connect(url,{
         dbName:"NextRole"
     });
-    console.log("...Connected...");
+    console.log("...Connected to Database...");
   } catch (error) {
     console.log("Database Error",error);
     process.exit(1);

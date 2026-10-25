@@ -172,7 +172,7 @@ const StudentEditProfile = () => {
       if (data.success) {
         alert("Profile Data Edited Successfully");
         dispatch(setProfileData(data.result));
-        navigate("/student-profile");
+        navigate("/candidate-profile");
         return;
       }
       alert("Profile Data Not Edited");

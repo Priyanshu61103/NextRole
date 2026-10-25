@@ -6,5 +6,5 @@ import { jwtVerificationMiddleware } from "../middleware/jwtVerificationMiddlewa
 const jobRouter = express.Router();
 
 jobRouter.post("/add-job-posting",jwtVerificationMiddleware,jobUpload.single("imageFile"),postJobContoller);
-jobRouter.get("/fetch-job-data",jwtVerificationMiddleware,fetchJobDataController);
+jobRouter.get("/fetch-job-data",fetchJobDataController);
 export default jobRouter;

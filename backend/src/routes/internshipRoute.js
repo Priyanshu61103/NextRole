@@ -7,5 +7,5 @@ import { jwtVerificationMiddleware } from "../middleware/jwtVerificationMiddlewa
 const internshipRouter = express.Router();
 
 internshipRouter.post("/add-internship-posting",jwtVerificationMiddleware,internshipUpload.single("imageFile"),postInternshipContoller);
-internshipRouter.get("/fetch-internship-data",jwtVerificationMiddleware,fetchIntenshipDataController);
+internshipRouter.get("/fetch-internship-data",fetchIntenshipDataController);
 export default internshipRouter;

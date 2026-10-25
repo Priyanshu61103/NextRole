@@ -1,5 +1,5 @@
 import { Edit, LogOut, X } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileTab } from "../utils/redux/slice/profileTabSlice/profileTabSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,11 +8,14 @@ const ProfileTab = () => {
   const profileData = useSelector((state) => state.profileData.value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const[status,setStatus] = useState("logged in");
   const user = localStorage.getItem("user");
   const logOutHandler = () => {
     localStorage.removeItem("userName");
     localStorage.removeItem("user");
+    setStatus("logged out");
     navigate("/");
+    return;
   };
 
   return (
@@ -26,7 +29,7 @@ const ProfileTab = () => {
           <div className="w-full flex justify-center">
             <div>
               <div className="my-4">
-                <Link to={user == "student"?"/student-profile":"/recruiter-profile"}>
+                <Link to={user == "candidate"?"/candidate-profile":"/recruiter-profile"}>
                   <img
                     src={profileData.payload.profilePhoto}
                     alt=""

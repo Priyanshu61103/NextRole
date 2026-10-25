@@ -138,7 +138,7 @@ const Profiledetails = () => {
       formData.append("firstName", firstName);
       formData.append("lastName", lastName);
       formData.append("mobileNumber", mobileNumber);
-      if (user == "student") {
+      if (user == "candidate") {
         formData.append("yearsOfExperience", yearsOfExperience);
         formData.append("startingYear", startingYear);
         formData.append("yearOfGraduation", yearOfGraduation);
@@ -186,7 +186,7 @@ const Profiledetails = () => {
         document.cookie = `token=,${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
-        navigate("/");
+        navigate("/login");
         return;
       }
       alert("Sorry! Account Not Created");
@@ -224,7 +224,7 @@ const Profiledetails = () => {
             <h2 className="text-xs lg:text-sm text-gray-500 text-center">
               Please Fill Your Profile Details and get Started with NextRole
             </h2>
-            {user == "student" && (
+            {user == "candidate" && (
               <div>
                 <form
                   action=""

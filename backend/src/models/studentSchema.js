@@ -10,13 +10,20 @@ const studentSchema = new mongoose.Schema({
       type:String,
       required:true
    },
+   auth:{
+      type:String,
+      enum:["local","google"],
+      defaault:"local"
+   },
    user:{
       type:String,
       required:true
    },
    password:{
       type:String,
-      required:true
+      required: function(){
+         return auth == "local";
+      }
    },   
    firstName:{
       type:String,

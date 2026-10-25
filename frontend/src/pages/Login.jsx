@@ -7,8 +7,7 @@ const Login = () => {
   const [emailValidity, setEmailValidity] = useState("");
   const [passwordValidity, setPasswordValidity] = useState("");
   const [visibility, setVisibility] = useState(false);
-  const [user, setUser] = useState("student");
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
 
   const emailChecker = () => {
@@ -79,30 +78,28 @@ const Login = () => {
       const loginData = {
         email,
         password,
-        user,
+        user:localStorage.getItem("user"),
       };
-      const response = await fetch(
-        `${VITE_BACKEND_URL}/login-verification`,
-        {
-          method: "POST",
-          body: JSON.stringify(loginData),
-          headers: {
-            "content-type": "application/json",
-          },
-        },
-      );
+      const response = await fetch(`${VITE_BACKEND_URL}/login-verification`, {
+        method: "POST",
+        body: JSON.stringify(loginData),
+        headers: {
+          "content-type": "application/json",
+        }
+      });
 
       if (!response) {
         alert("Error");
         return;
       }
       const data = await response.json();
+      console.log(data);
       if (data.success) {
         alert(`Welcome back,${data.payload.name}`);
-        document.cookie=`token=${data.token}`;
-        localStorage.setItem("userName",data.payload.userName);
-        localStorage.setItem("user",data.payload.user);
-        navigate("/home");
+        document.cookie = `token=${data.token}`;
+        localStorage.setItem("userName", data.payload.userName);
+        localStorage.setItem("user", data.payload.user);
+        navigate("/");
         return;
       }
       alert("Internal Server Error");
@@ -113,160 +110,132 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="h-fit w-72 lg:w-96 bg-white text-black rounded-t-xl flex justify-center py-7 lg:py-6">
-        <div>
-          <div className="text-center">
-            <h1 className="font-bold text-md lg:text-lg">Login</h1>
-            <p className="text-xs lg:text-sm text-gray-400">
-              Welcome back! Please Login to continue.
-            </p>
-          </div>
+    <div
+      className="h-screen w-screen flex justify-center items-center"
+      style={{ backgroundColor: "rgb(25,25,25)" }}
+    >
+      <div>
+        <div className="h-fit w-72 lg:w-96 bg-white text-black rounded-t-xl flex justify-center py-7 lg:py-6">
           <div>
-            <div className="h-20 w-full flex justify-center items-center">
-              {/* <GoogleLogin
+            <div className="text-center">
+              <h1 className="font-bold text-md lg:text-lg">Login</h1>
+              <p className="text-xs lg:text-sm text-gray-400">
+                Welcome back! Please Login to continue.
+              </p>
+            </div>
+            <div>
+              <div className="h-20 w-full flex justify-center items-center">
+                {/* <GoogleLogin
                     width="250"
                     onSuccess={googleAuthHandler}
                     onError={() => console.log("Google Error")}
                   /> */}
-              <div className="h-10 w-60 flex justify-center items-center border-2 border-gray-600 rounded-2xl gap-x-2">
-                <img
-                  src="../google.png"
-                  alt=""
-                  className="h-6 w-6 rounded-full"
-                />
-                <p className="text-md text-gray-600 font-semibold">
-                  Sign In with Google
-                </p>
-              </div>
-            </div>
-
-            <div className="flex gap-x-4 justify-center items-center">
-              <div className="h-0.5 w-28 lg:w-36 bg-gray-100"></div>
-              <p className="tet-sm text-gray-500">or</p>
-              <div className="h-0.5 w-28 lg:w-36 bg-gray-100"></div>
-            </div>
-            <form
-              action=""
-              className="flex flex-wrap gap-8 justify-center"
-              onSubmit={loginHandler}
-            >
-              <div className={"ml-4 lg:ml-0"}>
-                <h1
-                  htmlFor="email"
-                  className="font-semibold text-xs lg:text-sm mb-1"
-                >
-                  Email address
-                </h1>
-                <input
-                  type="text"
-                  placeholder="Enter your email address"
-                  className="lg:w-80 w-64 border-2 p-2 rounded-lg placeholder:text-xs lg:text-sm outline-none border-gray-200"
-                  onChange={(event) => {
-                    setEmailValidity("");
-                    setEmail(event.target.value);
-                  }}
-                  style={
-                    emailValidity == ""
-                      ? { border: "2px solid gray" }
-                      : { border: "2px solid red" }
-                  }
-                />
-                <p className="ml-4 lg:ml-0 text-red-500">{emailValidity}</p>
-              </div>
-              <div className="lg:w-80 w-64">
-                <h1 className="font-semibold text-xs lg:text-sm mb-2">
-                  Are you a ?
-                </h1>
-                <div className="flex justify-around">
-                  <button
-                    className={
-                      user == "student"
-                        ? "w-30 bg-black font-semibold border-2 border-black rounded-full p-2 text-sm text-white"
-                        : "w-30 font-semibold border-2 border-black rounded-full p-2 text-sm text-black"
-                    }
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setUser("student");
-                    }}
-                  >
-                    Student
-                  </button>
-                  <button
-                    className={
-                      user == "recruiter"
-                        ? "w-30 bg-black border-2 border-black font-semibold rounded-full p-2 text-sm text-white"
-                        : "w-30 border-2 border-black font-semibold rounded-full p-2 text-sm text-black"
-                    }
-                    onClick={(event) => {
-                      event.preventDefault();
-                      setUser("recruiter");
-                    }}
-                  >
-                    Recruiter
-                  </button>
-                </div>
-              </div>
-              <div className={"ml-4 lg:ml-0"}>
-                <h1
-                  htmlFor="email"
-                  className="font-semibold text-xs lg:text-sm mb-1"
-                >
-                  Password
-                </h1>
-                <div
-                  className="flex lg:w-80 w-64 border-2 p-2 rounded-lg border-gray-200 justify-between items-center"
-                  style={
-                    passwordValidity == ""
-                      ? { border: "2px solid gray" }
-                      : { border: "2px solid red" }
-                  }
-                >
-                  {!visibility ? (
-                    <input
-                      type="password"
-                      placeholder="Enter your password"
-                      className="w-76 outline-none placeholder:text-xs lg:text-sm"
-                      onChange={(event) => {
-                        setPasswordValidity("");
-                        setPassword(event.target.value);
-                      }}
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      placeholder="Create a password"
-                      className="w-76 outline-none placeholder:text-sm"
-                      onChange={(event) => {
-                        setPasswordValidity("");
-                        setPassword(event.target.value);
-                      }}
-                    />
-                  )}
+                <div className="h-10 w-60 flex justify-center items-center border-2 border-gray-600 rounded-2xl gap-x-2">
                   <img
-                    src="https://ik.imagekit.io/priyanshu61103/password-eye-icon.png"
+                    src="../google.png"
                     alt=""
-                    className="h-6 w-7"
-                    onClick={() => setVisibility(!visibility)}
+                    className="h-6 w-6 rounded-full"
                   />
+                  <p className="text-md text-gray-600 font-semibold">
+                    Sign In with Google
+                  </p>
                 </div>
-                <p className="text-red-500">{passwordValidity}</p>
               </div>
 
-              <button className="lg:w-80 w-64 p-2 bg-black rounded-lg flex justify-center text-sm lg:text-md items-center font-semibold text-white">
-                Continue
-              </button>
-            </form>
+              <div className="flex gap-x-4 justify-center items-center">
+                <div className="h-0.5 w-28 lg:w-36 bg-gray-100"></div>
+                <p className="tet-sm text-gray-500">or</p>
+                <div className="h-0.5 w-28 lg:w-36 bg-gray-100"></div>
+              </div>
+              <form
+                action=""
+                className="flex flex-wrap gap-8 justify-center"
+                onSubmit={loginHandler}
+              >
+                <div className={"ml-4 lg:ml-0"}>
+                  <h1
+                    htmlFor="email"
+                    className="font-semibold text-xs lg:text-sm mb-1"
+                  >
+                    Email address
+                  </h1>
+                  <input
+                    type="text"
+                    placeholder="Enter your email address"
+                    className="lg:w-80 w-64 border-2 p-2 rounded-lg placeholder:text-xs lg:text-sm outline-none border-gray-200"
+                    onChange={(event) => {
+                      setEmailValidity("");
+                      setEmail(event.target.value);
+                    }}
+                    style={
+                      emailValidity == ""
+                        ? { border: "2px solid gray" }
+                        : { border: "2px solid red" }
+                    }
+                  />
+                  <p className="ml-4 lg:ml-0 text-red-500">{emailValidity}</p>
+                </div>
+                <div className={"ml-4 lg:ml-0"}>
+                  <h1
+                    htmlFor="email"
+                    className="font-semibold text-xs lg:text-sm mb-1"
+                  >
+                    Password
+                  </h1>
+                  <div
+                    className="flex lg:w-80 w-64 border-2 p-2 rounded-lg border-gray-200 justify-between items-center"
+                    style={
+                      passwordValidity == ""
+                        ? { border: "2px solid gray" }
+                        : { border: "2px solid red" }
+                    }
+                  >
+                    {!visibility ? (
+                      <input
+                        type="password"
+                        placeholder="Enter your password"
+                        className="w-76 outline-none placeholder:text-xs lg:text-sm"
+                        onChange={(event) => {
+                          setPasswordValidity("");
+                          setPassword(event.target.value);
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="Create a password"
+                        className="w-76 outline-none placeholder:text-sm"
+                        onChange={(event) => {
+                          setPasswordValidity("");
+                          setPassword(event.target.value);
+                        }}
+                      />
+                    )}
+                    <img
+                      src="https://ik.imagekit.io/priyanshu61103/password-eye-icon.png"
+                      alt=""
+                      className="h-6 w-7"
+                      onClick={() => setVisibility(!visibility)}
+                    />
+                  </div>
+                  <p className="text-red-500">{passwordValidity}</p>
+                </div>
+
+                <button className="lg:w-80 w-64 p-2 bg-black rounded-lg flex justify-center text-sm lg:text-md items-center font-semibold text-white">
+                  Continue
+                </button>
+              </form>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="h-fit w-72 lg:w-96 bg-gray-100 text-black rounded-b-xl flex text-sm">
-        <div className="h-12 w-full flex justify-center items-center gap-x-1 text-sm lg:text-md">
-          <p>Don't have an account?</p>
-          <Link to="/signup">
-            <p className="font-semibold">Sign up</p>
-          </Link>
+        <div className="h-fit w-72 lg:w-96 bg-gray-100 text-black rounded-b-xl flex text-sm">
+          <div className="h-12 w-full flex justify-center items-center gap-x-1 text-sm lg:text-md">
+            <p>Don't have an account?</p>
+            <Link to="/signup">
+              <p className="font-semibold">Sign up</p>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

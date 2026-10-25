@@ -22,7 +22,7 @@ const Navbar = () => {
           <img src="../logo_darkmode.png" alt="" className="w-fit h-35" />
         </div>
 
-        <Link to="/home">
+        <Link to="/">
           <div className="h-25 w-25 flex justify-center items-center bg-transparent text-white font-semibold hover:bg-blue-400 hover:text-black">
             <h1>Home</h1>
           </div>
@@ -79,9 +79,9 @@ const Navbar = () => {
           {profileData && profileData.payload && <img src={profileData.payload.profilePhoto} alt="" className="rounded-full"/>}
         </div>}
         {!localStorage.getItem("userName") && 
-          <div className="font-bold text-white bg-blue-500 p-2 w-40 flex justify-center items-center rounded-xl">
+          <Link to="/account-type"><div className="font-bold text-white bg-blue-500 p-2 w-40 flex justify-center items-center rounded-xl">
              Sign In
-          </div>}
+          </div></Link>}
       </div>
       <div
         className={

@@ -187,7 +187,7 @@ const StudentProfilePage = () => {
                           <LogOutIcon />
                         </button>
                       </div>
-                      <Link to="/student-edit-profile">
+                      <Link to="/candidate-edit-profile">
                         <button className="flex gap-x-2 bg-blue-500 p-2 rounded-3xl relative right-6 cursor-pointer">
                           <Edit />
                           <h1 className="font-semibold">Edit Profile</h1>
