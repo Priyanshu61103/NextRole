@@ -1,5 +1,5 @@
 import imageKit from "../config/imageKitConfig.js";
-import { studentModel } from "../models/studentSchema.js";
+import { studentModel } from "../models/studentModel.js";
 import jwt from "jsonwebtoken";
 import {
   otpGenerationService,
@@ -11,21 +11,28 @@ import { recruiterModel } from "../models/recruiterModel.js";
 
 export async function signUpVerificationController(req, resp) {
   try {
-    const { email } = req.body;
-    // 400 = Bad Request
-    if (!email || !email.trim())
-      return resp
-        .status(400)
-        .send({ message: "No Email ID Provided", success: false });
-    const flag = await otpGenerationService(email);
-    if (!flag)
-      return resp
-        .status(500)
-        .send({ message: "Internal Server Error", success: false });
-    else
-      return resp
-        .status(200)
-        .send({ message: "Otp Sent on given Email Address", success: true });
+    const { auth } = req.body;
+    if (auth == "local") {
+      const { email } = req.body;
+      // 400 = Bad Request
+      if (!email || !email.trim())
+        return resp
+          .status(400)
+          .send({ message: "No Email ID Provided", success: false });
+      const flag = await otpGenerationService(email);
+      if (!flag)
+        return resp
+          .status(500)
+          .send({ message: "Internal Server Error", success: false });
+      else
+        return resp
+          .status(200)
+          .send({ message: "Otp Sent on given Email Address", success: true });
+    }else{
+        const { email } = req.data;
+        return resp.status(200).send({message:"Google Auth Verifiation Successfull",success:true,email});
+
+    }
   } catch (error) {
     console.log(error);
     resp.status(500).send({ message: "Error Catched", success: false });
@@ -206,7 +213,7 @@ export async function loginVerificationController(req, resp) {
           .status(500)
           .send({ message: "User Account Not Verified", success: false });
       }
-    }else {
+    } else {
       return resp
         .status(401)
         .send({ message: "User Not Found", success: false });

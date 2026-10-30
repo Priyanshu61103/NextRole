@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -88,23 +89,23 @@ const Login = () => {
         }
       });
 
-      if (!response) {
-        alert("Error");
-        return;
-      }
+       if (!response.ok) {
+              toast.error("Internal Server Error");
+              return;
+            }
       const data = await response.json();
       console.log(data);
       if (data.success) {
-        alert(`Welcome back,${data.payload.name}`);
+        toast.success(`Welcome back,${data.payload.name}`);
         document.cookie = `token=${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
         navigate("/");
         return;
       }
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     } catch (error) {
-      alert("Error Catched");
+      toast.error("Internal Server Error");
       console.log("Error :", error);
     }
   };

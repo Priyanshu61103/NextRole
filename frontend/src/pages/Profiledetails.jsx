@@ -1,6 +1,8 @@
 import { ArrowBigRight, X } from "lucide-react";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
 
 const Profiledetails = () => {
   const location = useLocation();
@@ -50,66 +52,71 @@ const Profiledetails = () => {
   const [targetRolesArrayValidity, setTargetRolesArrayValidity] =
     useState(true);
   const [targetRolesArrayMessage, setTargetRolesArrayMessage] = useState(false);
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
   const profilePageHandler = (event) => {
-    event.preventDefault();
-    if (firstName == "") {
-      setFirstNameValidity(false);
-      return;
+    try {
+      event.preventDefault();
+      if (firstName == "") {
+        setFirstNameValidity(false);
+        return;
+      }
+      if (lastName == "") {
+        setLastNameValidity(false);
+        return;
+      }
+      if (mobileNumber == "") {
+        setMobileNumberValidity(false);
+        return;
+      }
+      if (user == "student") {
+        if (!resume) {
+          setResumeValidity(false);
+          return;
+        }
+        if (collegeName == "") {
+          setCollegeNameValidity(false);
+          return;
+        }
+        if (course == "") {
+          setCourseValidity(false);
+          return;
+        }
+        if (specialization == "") {
+          setSpecializationValidity(false);
+          return;
+        }
+        if (startingYear == "") {
+          setStartingYearValidity(false);
+          return;
+        }
+        if (yearOfGraduation == "") {
+          setYearOfGraduationValidity(false);
+          return;
+        }
+        if (yearsOfExperience == "") {
+          setYearsOfExperienceValidity(false);
+          return;
+        }
+      } else if (user == "recruiter") {
+        if (!designation) {
+          setDesignationValidity(false);
+          return;
+        }
+        if (companyName == "") {
+          setCompanyNameValidity(false);
+          return;
+        }
+        if (companyLocation == "") {
+          setCompanyLocationValidity(false);
+          return;
+        }
+      }
+      setProfilePage(2);
+    } catch (error) {
+      toast.error("Internal Server Error");
+      console.log(error);
     }
-    if (lastName == "") {
-      setLastNameValidity(false);
-      return;
-    }
-    if (mobileNumber == "") {
-      setMobileNumberValidity(false);
-      return;
-    }
-    if (user == "student") {
-      if (!resume) {
-        setResumeValidity(false);
-        return;
-      }
-      if (collegeName == "") {
-        setCollegeNameValidity(false);
-        return;
-      }
-      if (course == "") {
-        setCourseValidity(false);
-        return;
-      }
-      if (specialization == "") {
-        setSpecializationValidity(false);
-        return;
-      }
-      if (startingYear == "") {
-        setStartingYearValidity(false);
-        return;
-      }
-      if (yearOfGraduation == "") {
-        setYearOfGraduationValidity(false);
-        return;
-      }
-      if (yearsOfExperience == "") {
-        setYearsOfExperienceValidity(false);
-        return;
-      }
-    } else if (user == "recruiter") {
-      if (!designation) {
-        setDesignationValidity(false);
-        return;
-      }
-      if (companyName == "") {
-        setCompanyNameValidity(false);
-        return;
-      }
-      if (companyLocation == "") {
-        setCompanyLocationValidity(false);
-        return;
-      }
-    }
-    setProfilePage(2);
   };
 
   const submitHandler = async (event) => {
@@ -152,6 +159,7 @@ const Profiledetails = () => {
         formData.append("password", signUpData.password);
         formData.append("user", signUpData.user);
         formData.append("cgpa", cgpa);
+        formData.append("auth", signUpData.auth);
       } else if (user == "recruiter") {
         formData.append("designation", designation);
         formData.append("companyName", companyName);
@@ -163,16 +171,13 @@ const Profiledetails = () => {
         formData.append("user", signUpData.user);
       }
 
-      const response = await fetch(
-        `${VITE_BACKEND_URL}/save-profile-details`,
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
+      const response = await fetch(`${VITE_BACKEND_URL}/save-profile-details`, {
+        method: "POST",
+        body: formData,
+      });
 
-      if (!response) {
-        alert("Error...");
+      if (!response.ok) {
+        toast.error("Internal Server Error");
         return;
       }
 
@@ -180,25 +185,28 @@ const Profiledetails = () => {
       if (data.success) {
         console.log(data.token);
         console.log(data.payload);
-        alert(
-          `Welcome ${firstName} ${lastName} on NextRole , Login to enter the world of Crafting Careers.`,
+        toast.success(
+          `Welcome ${firstName} ${lastName} on NextRole , the world of Crafting Careers.`,
         );
+        console.log(data);
         document.cookie = `token=,${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
-        navigate("/login");
+          setLoading(false);
+          navigate("/")
+        
         return;
       }
-      alert("Sorry! Account Not Created");
+      toast.error("Sorry! Account Not Created");
     } catch (error) {
       console.log(error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
 
   return (
     <div className="h-screen w-screen flex justify-center items-center bg-[url(../profile-page.png)] bg-cover">
-      <div className="h-150 w-220 bg-white rounded-2xl flex">
+     <div className="h-150 w-220 bg-white rounded-2xl flex">
         <div
           className="h-150 w-100 rounded-bl-2xl"
           style={{ backgroundColor: "rgb(25,25,25)" }}

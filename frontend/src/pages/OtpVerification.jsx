@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import OTPInput from "react-otp-input";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState("");
@@ -18,21 +19,21 @@ const OtpVerification = () => {
         },
       });
 
-      if (!response) {
-        alert("Error");
-        return;
-      }
+       if (!response.ok) {
+              toast.error("Internal Server Error");
+              return;
+            }
 
       const data = await response.json();
       if (data.success) {
-        alert(data.message);
+        toast.success(data.message);
         navigate("/profile-details", { state: { signUpData } });
         return;
       }
-      alert(data.message);
+      toast.error(data.message);
     } catch (error) {
       console.log("Error Catched: ", error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
   return (

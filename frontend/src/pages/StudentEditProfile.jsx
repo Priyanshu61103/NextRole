@@ -7,6 +7,7 @@ import { ArrowBigRight, Edit2, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../utils/redux/slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../components/ProfileTab";
+import { toast } from "react-toastify";
 
 const StudentEditProfile = () => {
   const profileData = useSelector((state) => state.profileData.value);
@@ -60,6 +61,7 @@ const StudentEditProfile = () => {
   const navigate = useNavigate();
 
   const checkValidity = () => {
+    try{
     if (firstName.trim() == "") {
       setFirstNameValidity(false);
       return false;
@@ -114,6 +116,10 @@ const StudentEditProfile = () => {
     }
 
     return true;
+  }catch(error){
+     toast.error("Internal Server Error");
+     console.log(error);
+  }
   };
 
   const submitHandler = async (event) => {
@@ -166,19 +172,22 @@ const StudentEditProfile = () => {
           credentials: "include",
         },
       );
-
+      if (!response.ok){
+               toast.error("Internal Server Error");
+               return;
+            }
       const data = await response.json();
 
       if (data.success) {
-        alert("Profile Data Edited Successfully");
+        toast.success("Profile Data Edited Successfully");
         dispatch(setProfileData(data.result));
         navigate("/candidate-profile");
         return;
       }
-      alert("Profile Data Not Edited");
+      toast.error("Profile Data Not Edited");
       return;
     } catch (error) {
-      alert(error);
+      toast.error("Internal Servaer Error");
       console.log(error);
       return;
     }

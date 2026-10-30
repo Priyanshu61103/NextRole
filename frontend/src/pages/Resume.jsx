@@ -18,7 +18,7 @@ const Resume = () => {
   const [resumeAnalyzerData, setresumeAnalyzerData] = useState({
     resume: "",
   });
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const navigate = useNavigate();
 
   const resumeHandler = () => {
@@ -48,21 +48,24 @@ const Resume = () => {
         body: formData,
         credentials: "include",
       });
-      if (!response) return;
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
 
       const data = await response.json();
       if (data.success) {
         console.log(data);
         navigate("/resume-feedback", { state: { analysis: data.result } });
       } else {
-        alert("Resume Not Analyzed Successfully...");
+        toast.error("Resume Not Analyzed Successfully...");
       }
       setresumeAnalyzerData({
         resume: "",
       });
     } catch (error) {
       console.log(error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
   return (

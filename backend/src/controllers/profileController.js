@@ -1,6 +1,6 @@
 import imageKit from "../config/imageKitConfig.js";
 import { recruiterModel } from "../models/recruiterModel.js";
-import { studentModel } from "../models/studentSchema.js";
+import { studentModel } from "../models/studentModel.js";
 import fs from "fs";
 
 export async function userDataController(req, resp) {

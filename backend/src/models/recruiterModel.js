@@ -21,9 +21,7 @@ const recruiterSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: function () {
-      return auth == "local";
-    },
+    required:true
   },
   firstName: {
     type: String,

@@ -24,6 +24,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { setProfileData } from "../utils/redux/slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../components/ProfileTab";
 import Host from "../components/Host";
+import { toast } from "react-toastify";
 
 const RecruiterProfilePage = () => {
   const profileData = useSelector((state) => state.profileData.value);
@@ -50,18 +51,21 @@ const RecruiterProfilePage = () => {
       });
 
       const data = await response.json();
-      if (!response) return;
+      if (!response.ok){
+         toast.error("Internal Server Error");
+         return;
+      }
       if (data.success) {
         dispatch(setProfileData(data.result));
         setArr(data.result.targetRoles);
         console.log("Running...");
         return;
       }
-      alert("UserData Not Loaded");
+      toast.error("UserData Not Loaded");
       return;
     } catch (error) {
       console.log(error);
-      alert("Error Catched");
+      toast.error("Internal Server Error");
     }
   };
 

@@ -25,16 +25,15 @@ const Home = () => {
       });
 
       const data = await response.json();
-      if (!response) return;
+      if (!response.ok) return;
       if (data.success) {
         dispatch(setProfileData(data.result));
         return;
       }
-      alert("UserData Not Loaded");
       return;
     } catch (error) {
       console.log(error);
-      alert("Error Catched");
+      toast.error("Internal Server Error");
     }
   };
   console.log(profileData);

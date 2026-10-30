@@ -63,21 +63,21 @@ const Jobs2 = () => {
         },
       );
 
-      if (!response) {
-        alert("Error");
+      if (!response.ok) {
+        toast.error("Internal Server Error");
         return;
       }
 
       const data = await response.json();
       if (data.success) {
-        alert("Internship Posting Posted Successfully");
+        toast.success("Internship Posting Posted Successfully");
         navigate("/home");
         return;
       }
-      alert("Internship Not Posted");
+      toast.error("Internship Not Posted");
     } catch (error) {
       console.log(error);
-      alert("Error");
+      toast.error("Internal Server Error");
     }
   };
 

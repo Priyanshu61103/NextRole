@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setResumeInputButton } from "../utils/redux/slice/ResumeInputButtonSlice/resumeInputButtonSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ResumeInput = () => {
   const [positionType, setPositionType] = useState("job");
@@ -19,49 +20,58 @@ const ResumeInput = () => {
   const [targetCompanyValidity, setTargetCompanyValidity] = useState(true);
   const [selectOpen, setSelectOpen] = useState(false);
   const navigate = useNavigate();
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const resumeInputButton = useSelector(
     (state) => state.resumeInputButton.value,
   );
   const dispatch = useDispatch();
 
   const submitHandler = async (event) => {
-    event.preventDefault();
-    if (positionTitle == "") {
-      setPositionTitleValidity(false);
-      return;
-    }
-    if (positionDescription == "") {
-      setPositionDescriptionValidity(false);
-      return;
-    }
-    if (targetCompany == "--select target company--") {
-      setTargetCompanyValidity(false);
-      return;
-    }
-    if (resume == "") {
-      setResumeValidity(false);
-      return;
-    }
+    try {
+      event.preventDefault();
+      if (positionTitle == "") {
+        setPositionTitleValidity(false);
+        return;
+      }
+      if (positionDescription == "") {
+        setPositionDescriptionValidity(false);
+        return;
+      }
+      if (targetCompany == "--select target company--") {
+        setTargetCompanyValidity(false);
+        return;
+      }
+      if (resume == "") {
+        setResumeValidity(false);
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append("userName",localStorage.getItem("userName"));
-    formData.append("type", positionType);
-    formData.append("title", positionTitle);
-    formData.append("description", positionDescription);
-    formData.append("targetCompany",targetCompany);
-    formData.append("resume", resume);
+      const formData = new FormData();
+      formData.append("userName", localStorage.getItem("userName"));
+      formData.append("type", positionType);
+      formData.append("title", positionTitle);
+      formData.append("description", positionDescription);
+      formData.append("targetCompany", targetCompany);
+      formData.append("resume", resume);
 
-    const response = await fetch(`${VITE_BACKEND_URL}/ai-interview-data`, {
-      method: "POST",
-      body: formData,
-      credentials: "include",
-    });
+      const response = await fetch(`${VITE_BACKEND_URL}/ai-interview-data`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
 
-    if (!response) return;
-    const data = await response.json();
-    if (data.success) {
-        navigate("/ai-interview"); 
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
+      
+      const data = await response.json();
+      if (data.success) {
+        navigate("/ai-interview");
+      }
+    } catch (error) {
+      toast.error("Internal Server Error");
+      console.log(error);
     }
   };
 
@@ -170,19 +180,33 @@ const ResumeInput = () => {
                     : "border-4 border-blue-600 p-2 m-2 mb-0 rounded-2xl w-100 outline-0"
                   : "border-4 border-red-600 p-2 m-2 rounded-2xl mb-0 w-100 outline-0"
               }
-              onClick={() => {setSelectOpen(!selectOpen)}}
-              onChange={(event)=>setTargetCompany(event.target.value)}
+              onClick={() => {
+                setSelectOpen(!selectOpen);
+              }}
+              onChange={(event) => setTargetCompany(event.target.value)}
             >
-              <option value = "--select-target-company--" className="bg-[rgb(25,25,25)] text-white text-center font-bold">
+              <option
+                value="--select-target-company--"
+                className="bg-[rgb(25,25,25)] text-white text-center font-bold"
+              >
                 --Select Target Company--
               </option>
-              <option value = "service-based-companies" className="bg-[rgb(25,25,25)] text-white text-center font-bold">
+              <option
+                value="service-based-companies"
+                className="bg-[rgb(25,25,25)] text-white text-center font-bold"
+              >
                 Service Based Companies
               </option>
-              <option value="product-based-companies" className="bg-[rgb(25,25,25)] text-white text-center font-bold">
+              <option
+                value="product-based-companies"
+                className="bg-[rgb(25,25,25)] text-white text-center font-bold"
+              >
                 Product Based Companies
               </option>
-              <option value="startup" className="bg-[rgb(25,25,25)] text-white text-center font-bold">
+              <option
+                value="startup"
+                className="bg-[rgb(25,25,25)] text-white text-center font-bold"
+              >
                 Startup
               </option>
             </select>

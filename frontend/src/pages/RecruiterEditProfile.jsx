@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setProfileData } from "../utils/redux/slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../components/ProfileTab";
 import Host from "../components/Host";
-
+import { toast } from "react-toastify";
 
 const RecruiterEditProfile = () => {
   const profileData = useSelector((state) => state.profileData.value);
@@ -29,7 +29,8 @@ const RecruiterEditProfile = () => {
   const [userName, setUserName] = useState("");
   const [summary, setSummary] = useState("");
   const [targetRole, setTargetRole] = useState("");
-  const [targetRolesArrayValidity, setTargetRolesArrayValidity] = useState(true);
+  const [targetRolesArrayValidity, setTargetRolesArrayValidity] =
+    useState(true);
   const [firstNameValidity, setFirstNameValidity] = useState(true);
   const [lastNameValidity, setLastNameValidity] = useState(true);
   const [resumeValidity, setResumeValidity] = useState(true);
@@ -38,52 +39,57 @@ const RecruiterEditProfile = () => {
   const [companyWebsiteValidity, setCompanyWebsiteValidity] = useState(true);
   const [mobileNumberValidity, setMobileNumberValidity] = useState(true);
   const [summaryValidity, setSummaryValidity] = useState(true);
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const checkValidity = () => {
-    if (firstName.trim() == "") {
-      setFirstNameValidity(false);
-      return false;
-    }
-    if (lastName.trim() == "") {
-      setLastNameValidity(false);
-      return false;
-    }
-    if (companyName.trim() == "") {
-      setCompanyNameValidity(false);
-      return false;
-    }
-    if (companyLocation.trim() == "") {
-      SetCompanyLocationValidity(false);
-      return false;
-    }
-    if (summary.trim() == "") {
-      setSummaryValidity(false);
-      return false;
-    }
-    if (companyWebsite.trim() == "") {
-      setCompanyWebsiteValidity(false);
-      return false;
-    }
-    if (targetRolesArray.length == 0) {
-      setTargetRolesArrayValidity(false);
-      return false;
-    }
-    if (mobileNumber.trim() == "") {
-      setMobileNumberValidity(false);
-      return false;
-    }
+    try {
+      if (firstName.trim() == "") {
+        setFirstNameValidity(false);
+        return false;
+      }
+      if (lastName.trim() == "") {
+        setLastNameValidity(false);
+        return false;
+      }
+      if (companyName.trim() == "") {
+        setCompanyNameValidity(false);
+        return false;
+      }
+      if (companyLocation.trim() == "") {
+        SetCompanyLocationValidity(false);
+        return false;
+      }
+      if (summary.trim() == "") {
+        setSummaryValidity(false);
+        return false;
+      }
+      if (companyWebsite.trim() == "") {
+        setCompanyWebsiteValidity(false);
+        return false;
+      }
+      if (targetRolesArray.length == 0) {
+        setTargetRolesArrayValidity(false);
+        return false;
+      }
+      if (mobileNumber.trim() == "") {
+        setMobileNumberValidity(false);
+        return false;
+      }
 
-    return true;
+      return true;
+    } catch (error) {
+      toast.error("Internal Server Error");
+      console.log(error);
+    }
   };
 
   const submitHandler = async (event) => {
     try {
       event.preventDefault();
       if (!checkValidity()) {
-        alert("Please Fill Details Correctly");
+        toast.error("Please Fill Details Correctly");
         return;
       }
       const formData = new FormData();
@@ -102,27 +108,28 @@ const RecruiterEditProfile = () => {
       formData.append("companyWebsite", companyWebsite);
       console.log(Object.fromEntries(formData));
 
-      const response = await fetch(
-        `${VITE_BACKEND_URL}/update-profile-data`,
-        {
-          method: "PUT",
-          body: formData,
-          credentials: "include",
-        },
-      );
+      const response = await fetch(`${VITE_BACKEND_URL}/update-profile-data`, {
+        method: "PUT",
+        body: formData,
+        credentials: "include",
+      });
+
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
 
       const data = await response.json();
 
       if (data.success) {
-        alert("Profile Data Edited Successfully");
+        toast.success("Profile Data Edited Successfully");
         dispatch(setProfileData(data.result));
         navigate("/recruiter-profile");
         return;
       }
-      alert("Profile Data Not Edited");
-      return;
+      toast.error("Profile Data Not Edited");
     } catch (error) {
-      alert(error);
+      toast.error("Internal Server Error");
       console.log(error);
       return;
     }
@@ -407,8 +414,6 @@ const RecruiterEditProfile = () => {
                     />
                   </div>
 
-                  
-               
                   <div className="h-10 w-80 flex flex-wrap gap-2">
                     <div className="w-80 flex gap-x-1 mt-5">
                       <div className="w-40 flex flex-wrap gap-2">
@@ -455,7 +460,6 @@ const RecruiterEditProfile = () => {
                         />
                       </div>
                     </div>
-
                   </div>
                   <div className="w-80 flex flex-wrap gap-2">
                     <label
@@ -490,24 +494,27 @@ const RecruiterEditProfile = () => {
                       Target Roles
                     </label>
                     <div className="h-40 w-80 flex gap-1 flex-wrap rounded-xl border-2 border-blue-500 p-2 outline-none">
-                      {targetRolesArray && targetRolesArray.map((itr, index) => (
-                        <div
-                          key={index}
-                          className="flex justify-center items-center gap-x-1 outline-none bg-blue-400 text-black font-semibold text-xs rounded-full h-fit w-fit p-2 py-1"
-                        >
-                          {itr}
+                      {targetRolesArray &&
+                        targetRolesArray.map((itr, index) => (
                           <div
-                            onClick={(event) => {
-                              event.preventDefault();
-                              setTargetRolesArrayValidity(true);
-                              const arr = targetRolesArray.filter((it) => it != itr);
-                              setTargetRolesArray(arr);
-                            }}
+                            key={index}
+                            className="flex justify-center items-center gap-x-1 outline-none bg-blue-400 text-black font-semibold text-xs rounded-full h-fit w-fit p-2 py-1"
                           >
-                            <X size={12} />
+                            {itr}
+                            <div
+                              onClick={(event) => {
+                                event.preventDefault();
+                                setTargetRolesArrayValidity(true);
+                                const arr = targetRolesArray.filter(
+                                  (it) => it != itr,
+                                );
+                                setTargetRolesArray(arr);
+                              }}
+                            >
+                              <X size={12} />
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                     <input
                       type="text"
@@ -522,7 +529,10 @@ const RecruiterEditProfile = () => {
                       onKeyDown={(event) => {
                         if (event.key == "Enter" && targetRole.trim() != "") {
                           event.preventDefault();
-                          setTargetRolesArray([...targetRolesArray, targetRole]);
+                          setTargetRolesArray([
+                            ...targetRolesArray,
+                            targetRole,
+                          ]);
                           setTargetRole("");
                         }
                       }}
@@ -547,14 +557,13 @@ const RecruiterEditProfile = () => {
       {profileTab && (
         <div
           className={
-            hostSwitch == "on"?
-            button == "on"
-              ? "flex justify-end z-100 relative bottom-375 right-5"
-              : "flex justify-end z-100 relative bottom-325 right-5"
-            :
-            button == "on"
-              ? "flex justify-end z-100 relative bottom-315 right-5"
-              : "flex justify-end z-100 relative bottom-265 right-5"  
+            hostSwitch == "on"
+              ? button == "on"
+                ? "flex justify-end z-100 relative bottom-375 right-5"
+                : "flex justify-end z-100 relative bottom-325 right-5"
+              : button == "on"
+                ? "flex justify-end z-100 relative bottom-315 right-5"
+                : "flex justify-end z-100 relative bottom-265 right-5"
           }
         >
           <ProfileTab />

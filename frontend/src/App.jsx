@@ -26,6 +26,7 @@ import InterviewRoom from "./pages/InterviewRoom.jsx";
 import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 import AccountType from "./pages/AccountType.jsx";
+import CreatePassword from "./pages/CreatePassword.jsx";
 
 const App = () => {
   return (
@@ -37,7 +38,7 @@ const App = () => {
           closeOnClick
           pauseOnHover
           draggable
-          theme="dark"
+          theme="colored"
         />
         <Routes>
           <Route path="/" element={<Home />}></Route>
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="/candidate-edit-profile" element={<StudentEditProfile/>}></Route>
           <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
           <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
+          <Route path="/create-password" element = {<CreatePassword/>}></Route>
         </Routes>
       </Router>
     </Provider>

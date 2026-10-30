@@ -11,7 +11,7 @@ const HeroSectionJobs = () => {
   const [jobData, setJobData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const fetchJobData = async () => {
     try {
@@ -20,7 +20,8 @@ const HeroSectionJobs = () => {
         credentials: "include",
       });
 
-      if (!response) {
+      if (!response.ok) {
+        toast.error("Internal Server Error");
         return;
       }
 
@@ -31,10 +32,10 @@ const HeroSectionJobs = () => {
         return;
       }
       console.log(data.message);
-      alert("Job Data Not Loaded");
+      toast.error("Job Data Not Loaded");
     } catch (error) {
       console.log(error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
 
@@ -68,7 +69,11 @@ const HeroSectionJobs = () => {
           {jobData.length > 0 ? (
             jobData.map((job, index) => (
               <div
-                className={(index<=counter1+3 && index >= counter1) ? "h-60 w-75 rounded-xl border-2 border-blue-500 p-5":"hidden"}
+                className={
+                  index <= counter1 + 3 && index >= counter1
+                    ? "h-60 w-75 rounded-xl border-2 border-blue-500 p-5"
+                    : "hidden"
+                }
                 style={{ backgroundColor: "rgb(20, 20 , 20)" }}
               >
                 <div className="h-7 w-30 border-2 border-gray-200 rounded-xl flex justify-center items-center">
@@ -128,7 +133,7 @@ const HeroSectionJobs = () => {
           )}
           <button
             onClick={() => {
-              if (counter1 < jobData.length-4) setCounter1(counter1 + 1);
+              if (counter1 < jobData.length - 4) setCounter1(counter1 + 1);
             }}
           >
             <img src="more_than_icon.png" alt="" className="h-5 w-5" />

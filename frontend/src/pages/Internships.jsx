@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { setDetails } from "../utils/redux/slice/detailSlice/detailSlice";
 import { useNavigate } from "react-router-dom";
 import ProfileTab from "../components/ProfileTab";
+import { toast } from "react-toastify";
 const Internships = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
@@ -27,7 +28,7 @@ const Internships = () => {
         credentials: "include",
       });
 
-      if (!response) {
+      if (!response.ok) {
         return;
       }
 
@@ -38,10 +39,10 @@ const Internships = () => {
         return;
       }
       console.log(data.message);
-      alert("Internship Data Not Loaded");
+      toast.error("Internship Data Not Loaded");
     } catch (error) {
       console.log(error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
 

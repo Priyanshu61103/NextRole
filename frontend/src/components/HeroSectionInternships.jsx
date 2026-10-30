@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDetails } from "../utils/redux/slice/detailSlice/detailSlice";
+import { toast } from "react-toastify";
 
 const HeroSectionInternships = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
@@ -23,7 +24,8 @@ const HeroSectionInternships = () => {
         },
       );
 
-      if (!response) {
+      if (!response.ok) {
+        toast.error("Internal Server Error");
         return;
       }
 
@@ -34,10 +36,10 @@ const HeroSectionInternships = () => {
         return;
       }
       console.log(data.message);
-      alert("Job Data Not Loaded");
+      toast.error("Job Data Not Loaded");
     } catch (error) {
       console.log(error);
-      alert("Internal Server Error");
+      toast.error("Internal Server Error");
     }
   };
 

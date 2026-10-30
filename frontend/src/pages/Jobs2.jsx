@@ -12,7 +12,7 @@ import ProfileTab from "../components/ProfileTab";
 const Jobs2 = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
-  const profileTab = useSelector((state)=>state.profileTab.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const dispatch = useDispatch();
   dispatch(() => setHostSwitch());
   const [title, setTitle] = useState("");
@@ -31,7 +31,7 @@ const Jobs2 = () => {
   const [domain, setDomain] = useState("");
   const [imageFile, setImageFile] = useState("");
   const navigate = useNavigate();
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const submitHandler = async (event) => {
     try {
@@ -52,29 +52,29 @@ const Jobs2 = () => {
       formData.append("company", company);
       formData.append("domain", domain);
       formData.append("imageFile", imageFile);
-      formData.append("userName",localStorage.getItem("userName"));
+      formData.append("userName", localStorage.getItem("userName"));
       console.log(Object.fromEntries(formData));
-      const response = await fetch(`${VITE_BACKEND_URL}/add-job-posting`,{
-         method:"POST",
-         body:formData,
-         credentials:"include"
+      const response = await fetch(`${VITE_BACKEND_URL}/add-job-posting`, {
+        method: "POST",
+        body: formData,
+        credentials: "include",
       });
 
-      if(!response){
-         alert("Error");
-         return;
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
       }
 
       const data = await response.json();
-      if(data.success){
-         alert("Job Posting Posted Successfully");
-         navigate("/home");  
-         return;
+      if (data.success) {
+        toast.success("Job Posting Posted Successfully");
+        navigate("/home");
+        return;
       }
-      alert("Job Not Posted");
+      toast.error("Job Not Posted");
     } catch (error) {
-        console.log(error);
-        alert("Error");
+      console.log(error);
+      toast.error("Internal Server Error");
     }
   };
   return (
@@ -86,27 +86,37 @@ const Jobs2 = () => {
         <Navbar />
         {hostSwitch == "on" && <Host />}
         {profileTab && (
-          <div  className={
-          hostSwitch == "on"
-            ? button == "on"
-              ? "flex justify-end z-100 relative bottom-117 right-5"
-              : "flex justify-end z-100 relative bottom-67 right-5"
-            : button == "on"
-            ? "flex justify-end z-100 relative bottom-57 right-5"
-            : "flex justify-end z-100 relative bottom-7 right-5"
-        }>
+          <div
+            className={
+              hostSwitch == "on"
+                ? button == "on"
+                  ? "flex justify-end z-100 relative bottom-117 right-5"
+                  : "flex justify-end z-100 relative bottom-67 right-5"
+                : button == "on"
+                  ? "flex justify-end z-100 relative bottom-57 right-5"
+                  : "flex justify-end z-100 relative bottom-7 right-5"
+            }
+          >
             <ProfileTab />
           </div>
-        )} 
+        )}
         <div
           className={
             hostSwitch == "on"
               ? button == "on"
-                ? profileTab ? "relative bottom-194 opacity-25 z-10":"relative bottom-110 opacity-25 z-10"
-                : profileTab ? "relative bottom-144 opacity-25 z-10":"relative bottom-60 opacity-25 z-10"
+                ? profileTab
+                  ? "relative bottom-194 opacity-25 z-10"
+                  : "relative bottom-110 opacity-25 z-10"
+                : profileTab
+                  ? "relative bottom-144 opacity-25 z-10"
+                  : "relative bottom-60 opacity-25 z-10"
               : button == "on"
-                ? profileTab ? "relative bottom-134 opacity-100 z-10":"relative bottom-50 opacity-25 z-10"
-                : profileTab ? "relative bottom-84 opacity-100 z-10":"opacity-100 z-10"
+                ? profileTab
+                  ? "relative bottom-134 opacity-100 z-10"
+                  : "relative bottom-50 opacity-25 z-10"
+                : profileTab
+                  ? "relative bottom-84 opacity-100 z-10"
+                  : "opacity-100 z-10"
           }
         >
           <h1 className="text-blue-400 font-semibold text-4xl ml-15">

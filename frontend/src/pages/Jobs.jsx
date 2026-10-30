@@ -10,45 +10,46 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setDetails } from "../utils/redux/slice/detailSlice/detailSlice";
 import ProfileTab from "../components/ProfileTab";
+import { toast } from "react-toastify";
 const Jobs = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const details = useSelector((state) => state.details.value);
   const button = useSelector((state) => state.button.value);
-  const profileTab = useSelector((state)=>state.profileTab.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const [jobData, setJobData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
-  const fetchJobData = async() => {
-     try{
-        const response = await fetch(`${VITE-BACKEND_URL}/fetch-job-data`,{
-          method:"GET",
-          credentials:"include"
-        });
+  const fetchJobData = async () => {
+    try {
+      const response = await fetch(`${VITE_BACKEND_URL}/fetch-job-data`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-        if(!response){
-           return;
-        }
-        
-        const data = await response.json();
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
 
-        if(data.success){
-           setJobData(data.result);
-           return;
-        }
-        console.log(data.message);
-        alert("Job Data Not Loaded");
-     }catch(error){
-         console.log(error);
-         alert("Internal Server Error");   
-     }  
-  }
+      const data = await response.json();
+
+      if (data.success) {
+        setJobData(data.result);
+        return;
+      }
+      console.log(data.message);
+      toast.error("Job Data Not Loaded");
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal Server Error");
+    }
+  };
 
   useEffect(() => {
-     fetchJobData();  
+    fetchJobData();
   }, []);
-  
 
   const saveDetails = (data) => {
     dispatch(setDetails(data));
@@ -69,8 +70,8 @@ const Jobs = () => {
               ? "relative bottom-110 opacity-25 z-10"
               : "relative bottom-60 opacity-25 z-10"
             : button == "on"
-            ? "relative bottom-50 z-10 opacity-25"
-            : "opacity-100 z-10"
+              ? "relative bottom-50 z-10 opacity-25"
+              : "opacity-100 z-10"
         }
       >
         {profileTab && (
@@ -78,7 +79,13 @@ const Jobs = () => {
             <ProfileTab />
           </div>
         )}
-        <div className = {profileTab ? "relative bottom-85 flex gap-10" : "relative bottom-0 flex gap-10"}>
+        <div
+          className={
+            profileTab
+              ? "relative bottom-85 flex gap-10"
+              : "relative bottom-0 flex gap-10"
+          }
+        >
           <Filter />
           <div className="w-full">
             <div>
@@ -119,7 +126,11 @@ const Jobs = () => {
                       </h2>
                     </div>
                     <div className="h-fit w-30 relative bottom-5">
-                      <img src={job.imageFile} alt="" className="object-cover" />
+                      <img
+                        src={job.imageFile}
+                        alt=""
+                        className="object-cover"
+                      />
                     </div>
                   </div>
 
