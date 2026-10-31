@@ -1,16 +1,17 @@
 import jwt from "jsonwebtoken";
 
-export function jwtVerificationMiddleware(req, resp, next) {
+export async function jwtVerificationMiddleware(req, resp, next) {
   try {
     const { token } = req.cookies;
+    console.log(process.env.JWT_SECRETKEY);
     if(!token){
         return resp.status(401).send({ message: "Unauthorized User", success: false });
     }
-    const flag = jwt.verify(token, process.env.JWT_SECRETKEY);
-    if (!flag) {
-      return resp.status(401).send({ message: "Unauthorized User", success: false });
-    }
-    next();
+    await jwt.verify(token, process.env.JWT_SECRETKEY,{expiresIn:"10d"},(error)=>{
+       if(error)
+       return resp.status(401).send({ message: "Unauthorized User", success: false , error}); 
+       next();
+    });
   } catch (error) {
     if (error == "Token Expired Error") {
       return resp.status(401).send({ message: "Unauthorized User", success: false });

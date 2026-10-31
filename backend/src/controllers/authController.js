@@ -8,6 +8,7 @@ import {
 import bcrypt from "bcrypt";
 import fs from "fs";
 import { recruiterModel } from "../models/recruiterModel.js";
+import { OAuth2Client } from "google-auth-library";
 
 export async function signUpVerificationController(req, resp) {
   try {
@@ -28,10 +29,13 @@ export async function signUpVerificationController(req, resp) {
         return resp
           .status(200)
           .send({ message: "Otp Sent on given Email Address", success: true });
-    }else{
-        const { email } = req.data;
-        return resp.status(200).send({message:"Google Auth Verifiation Successfull",success:true,email});
-
+    } else {
+      const { email } = req.data;
+      return resp.status(200).send({
+        message: "Google Auth Verifiation Successfull",
+        success: true,
+        email,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -102,19 +106,29 @@ export async function saveProfileController(req, resp) {
           userName: data.userName,
           user: data.user,
         };
-        const token = await jwt.sign(payload, process.env.JWT_SECRETKEY, {
-          expiresIn: "10d",
-        });
-        return resp.status(200).send({
-          message: "User Account Created",
-          success: true,
-          token,
+        await jwt.sign(
           payload,
-        });
+          process.env.JWT_SECRETKEY,
+          { expiresIn: "10d" },
+          (error, token) => {
+            if (error)
+              return resp
+                .status(500)
+                .send({
+                  message: "User Account Not Created",
+                  success: false,
+                  error,
+                });
+
+            return resp.status(200).send({
+              message: "User Account Created",
+              success: true,
+              token,
+              payload,
+            });
+          },
+        );
       }
-      return resp
-        .status(500)
-        .send({ message: "User Acount Not Created", success: false });
     } else if (data.user == "recruiter") {
       let targetRolesArray = data.targetRoles.split(",");
       data.targetRoles = targetRolesArray;
@@ -124,19 +138,29 @@ export async function saveProfileController(req, resp) {
           userName: data.userName,
           user: data.user,
         };
-        const token = await jwt.sign(payload, process.env.JWT_SECRETKEY, {
-          expiresIn: "10d",
-        });
-        return resp.status(200).send({
-          message: "User Account Created",
-          success: true,
-          token,
+        await jwt.sign(
           payload,
-        });
+          process.env.JWT_SECRETKEY,
+          { expiresIn: "10d" },
+          (error, token) => {
+            if (error)
+              return resp
+                .status(500)
+                .send({
+                  message: "User Account Not Created",
+                  success: false,
+                  error,
+                });
+
+            return resp.status(200).send({
+              message: "User Account Created",
+              success: true,
+              token,
+              payload,
+            });
+          },
+        );
       }
-      return resp
-        .status(500)
-        .send({ message: "User Acount Not Created", success: false });
     } else {
       return resp
         .status(401)
@@ -151,58 +175,167 @@ export async function saveProfileController(req, resp) {
 export async function loginVerificationController(req, resp) {
   try {
     const data = req.body;
+    let email;
     if (data.user == "candidate") {
-      const result = await studentModel.findOne({ email: data.email });
+      if (data.auth == "google") {
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        const ticket = await client.verifyIdToken({
+          idToken: data.token,
+          audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        email = ticket.getPayload().email;
+      } else {
+        email = data.email;
+      }
+
+      const result = await studentModel.findOne({ email });
       if (result) {
-        let flag = false;
-        flag = await bcrypt.compare(data.password, result.password);
-        if (flag) {
+        if (data.auth == "local") {
+          let flag = false;
+          flag = await bcrypt.compare(data.password, result.password);
+          if (flag) {
+            const name = result.firstName + " " + result.lastName;
+            const payload = {
+              name: name,
+              userName: result.userName,
+              user: result.user,
+            };
+            await jwt.sign(
+              payload,
+              process.env.JWT_SECRETKEY,
+              {
+                expiresIn: "10d",
+              },
+              (error, token) => {
+                if (error)
+                  return resp.status(200).send({
+                    message: "User Account Not Verified",
+                    success: false,
+                    error,
+                  });
+
+                return resp.status(200).send({
+                  message: "User Account Verified",
+                  success: true,
+                  payload,
+                  token,
+                });
+              },
+            );
+          }
+        } else if (data.auth == "google") {
           const name = result.firstName + " " + result.lastName;
           const payload = {
             name: name,
             userName: result.userName,
             user: result.user,
           };
-          const token = await jwt.sign(payload, process.env.JWT_SECRETKEY, {
-            expiresIn: "10d",
-          });
-          return resp.status(200).send({
-            message: "User Account Verified",
-            success: true,
+          await jwt.sign(
             payload,
-            token,
-          });
+            process.env.JWT_SECRETKEY,
+            {
+              expiresIn: "10d",
+            },
+            (error, token) => {
+              if (error)
+                return resp.status(200).send({
+                  message: "User Account Not Verified",
+                  success: false,
+                  error,
+                });
+
+              return resp.status(200).send({
+                message: "User Account Verified",
+                success: true,
+                payload,
+                token,
+              });
+            },
+          );
         } else {
-          return resp
-            .status(500)
-            .send({ message: "User Account Not Verified", success: false });
+          return resp.status(500).send({
+            message: "User Account Not Verified JWT fail",
+            success: false,
+          });
         }
       } else {
         return resp
           .status(500)
-          .send({ message: "User Account Not Verified", success: false });
+          .send({ message: "User Not Found", success: false });
       }
     } else if (data.user == "recruiter") {
+      if (data.auth == "google") {
+        const client = new OAuth2Client(process.env.GOOGLE_CLIEENT_ID);
+        const ticket = await client.verifyIdToken({
+          idToken: data.token,
+          audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        email = ticket.getPayload().email;
+      } else {
+        email = data.email;
+      }
       const result = await recruiterModel.findOne({ email: data.email });
       if (result) {
-        let flag = false;
-        flag = await bcrypt.compare(data.password, result.password);
-        if (flag) {
-          const name = result.firstName + " " + result.lastName;
-          const payload = {
-            name: name,
-            userName: result.userName,
-            user: result.user,
-          };
-          const token = await jwt.sign(payload, process.env.JWT_SECRETKEY, {
-            expiresIn: "10d",
-          });
-          return resp.status(200).send({
-            message: "User Account Verified",
-            success: true,
-            payload,
-            token,
-          });
+        if (data.auth == "local") {
+          let flag = false;
+          flag = await bcrypt.compare(data.password, result.password);
+          if (flag) {
+            const name = result.firstName + " " + result.lastName;
+            const payload = {
+              name: name,
+              userName: result.userName,
+              user: result.user,
+            };
+            await jwt.sign(
+              payload,
+              process.env.JWT_SECRETKEY,
+              {
+                expiresIn: "10d",
+              },
+              (error, token) => {
+                if (error)
+                  return resp.status(200).send({
+                    message: "User Account Not Verified",
+                    success: false,
+                  });
+
+                return resp.status(200).send({
+                  message: "User Account Verified",
+                  success: true,
+                  payload,
+                  token,
+                });
+              },
+            );
+          } else if (data.auth == "google") {
+            const name = result.firstName + " " + result.lastName;
+            const payload = {
+              name: name,
+              userName: result.userName,
+              user: result.user,
+            };
+            await jwt.sign(
+              payload,
+              process.env.JWT_SECRETKEY,
+              {
+                expiresIn: "10d",
+              },
+              (error, token) => {
+                if (error)
+                  return resp.status(200).send({
+                    message: "User Account Not Verified",
+                    success: false,
+                  });
+
+                return resp.status(200).send({
+                  message: "User Account Verified",
+                  success: true,
+                  payload,
+                  token,
+                });
+              },
+            );
+          }
         } else {
           return resp
             .status(500)

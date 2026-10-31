@@ -13,6 +13,7 @@ const Home = () => {
   const fetchUserData = async () => {
     try {
       const response = await fetch(`${VITE_BACKEND_URL}/fetch-user-data`, {
+        credentials:"include",
         method: "POST",
         body: JSON.stringify({
           userName: localStorage.getItem("userName"),
@@ -21,7 +22,6 @@ const Home = () => {
         headers: {
           "content-type": "application/json",
         },
-        credentials: "include",
       });
 
       const data = await response.json();

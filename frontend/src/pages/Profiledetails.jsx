@@ -192,9 +192,7 @@ const Profiledetails = () => {
         document.cookie = `token=,${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
-          setLoading(false);
-          navigate("/")
-        
+        navigate("/")
         return;
       }
       toast.error("Sorry! Account Not Created");
