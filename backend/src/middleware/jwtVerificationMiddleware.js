@@ -3,7 +3,8 @@ import jwt from "jsonwebtoken";
 export async function jwtVerificationMiddleware(req, resp, next) {
   try {
     const { token } = req.cookies;
-    console.log(process.env.JWT_SECRETKEY);
+    console.log("secret key: ",process.env.JWT_SECRETKEY);
+    console.log("token: ",token);
     if(!token){
         return resp.status(401).send({ message: "Unauthorized User", success: false });
     }

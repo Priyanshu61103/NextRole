@@ -189,7 +189,7 @@ const Profiledetails = () => {
           `Welcome ${firstName} ${lastName} on NextRole , the world of Crafting Careers.`,
         );
         console.log(data);
-        document.cookie = `token=,${data.token}`;
+        document.cookie = `token=${data.token}`;
         localStorage.setItem("userName", data.payload.userName);
         localStorage.setItem("user", data.payload.user);
         navigate("/")

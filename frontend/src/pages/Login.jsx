@@ -26,10 +26,13 @@ const Login = () => {
           "content-type": "application/json",
         },
       });
+
       if (!response.ok) {
-        toast.error("Internal Server Error");
+        toast.warn("Your Account is not created yet on NextRole , kindly Signup to create one.");
+        navigate("/signup");
         return;
       }
+      
       const data = await response.json();
       if (data.success) {
         toast.success(`Welcome back,${data.payload.name}`);
@@ -39,7 +42,6 @@ const Login = () => {
         navigate("/");
         return;
       }
-      toast.error("Internal Server Error");
     } catch (error) {
       toast.error("Internal Server Error");
       console.log("Error :", error);

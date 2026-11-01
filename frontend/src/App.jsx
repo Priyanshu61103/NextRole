@@ -27,6 +27,7 @@ import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 import AccountType from "./pages/AccountType.jsx";
 import CreatePassword from "./pages/CreatePassword.jsx";
+import Apply from "./pages/Apply.jsx";
 
 const App = () => {
   return (
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="/recruiter-edit-profile" element={<RecruiterEditProfile/>}></Route> 
           <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
           <Route path="/create-password" element = {<CreatePassword/>}></Route>
+          <Route path="/apply/:id" element = {<Apply/>}></Route>
         </Routes>
       </Router>
     </Provider>

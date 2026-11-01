@@ -102,7 +102,9 @@ export async function saveProfileController(req, resp) {
       data.skills = skillsArray;
       const result = await studentModel.create(data);
       if (result) {
+        const name = data.firstName + " " + data.lastName;
         const payload = {
+          name: name,
           userName: data.userName,
           user: data.user,
         };
@@ -112,13 +114,11 @@ export async function saveProfileController(req, resp) {
           { expiresIn: "10d" },
           (error, token) => {
             if (error)
-              return resp
-                .status(500)
-                .send({
-                  message: "User Account Not Created",
-                  success: false,
-                  error,
-                });
+              return resp.status(500).send({
+                message: "User Account Not Created",
+                success: false,
+                error,
+              });
 
             return resp.status(200).send({
               message: "User Account Created",
@@ -134,7 +134,9 @@ export async function saveProfileController(req, resp) {
       data.targetRoles = targetRolesArray;
       const result = await recruiterModel.create(data);
       if (result) {
+        const name = data.firstName + " " + data.lastName;
         const payload = {
+          name: name,
           userName: data.userName,
           user: data.user,
         };
@@ -144,13 +146,11 @@ export async function saveProfileController(req, resp) {
           { expiresIn: "10d" },
           (error, token) => {
             if (error)
-              return resp
-                .status(500)
-                .send({
-                  message: "User Account Not Created",
-                  success: false,
-                  error,
-                });
+              return resp.status(500).send({
+                message: "User Account Not Created",
+                success: false,
+                error,
+              });
 
             return resp.status(200).send({
               message: "User Account Created",
@@ -260,7 +260,7 @@ export async function loginVerificationController(req, resp) {
         }
       } else {
         return resp
-          .status(500)
+          .status(401)
           .send({ message: "User Not Found", success: false });
       }
     } else if (data.user == "recruiter") {
