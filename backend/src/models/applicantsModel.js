@@ -1,0 +1,58 @@
+import mongoose from "mongoose";
+
+const applicantsSchema = new mongoose.Schema({
+   firstName:{
+       type:String,
+       required:true  
+   }, 
+   lastName:{
+       type:String,
+       required:true  
+   }, 
+   email:{
+       type:String,
+       required:true  
+   },
+   cgpa:{
+       type:String,
+       required:true  
+   }, 
+   mobileNumber:{
+       type:String,
+       required:true  
+   }, 
+   resume:{
+       type:String,
+       required:true  
+   }, 
+   join:{
+       type:String,
+       required:true  
+   },
+   hire:{
+       type:String,
+       required:true  
+   }, 
+   jobId:{
+       type:mongoose.Schema.Types.ObjectId,
+       default:Date.now 
+   }, 
+   applicantId:{
+       type:mongoose.Schema.Types.ObjectId,
+       default:Date.now 
+   },
+   atsScore:{
+      type:String,
+      required:true 
+   },
+   createdAt:{
+       type:Date,
+       default:Date.now 
+   }, 
+   updatedAt:{
+       type:Date,
+       default:Date.now 
+   }  
+});
+
+export const applicantsModel = await mongoose.model("Applicants",applicantsSchema);

@@ -68,7 +68,7 @@ const jobSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now,
-  },
+  }
 });
 
 export const jobModel = await mongoose.model("Jobs", jobSchema);
