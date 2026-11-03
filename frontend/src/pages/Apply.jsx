@@ -41,6 +41,7 @@ const Apply = () => {
         email: profileData.payload.email,
         cgpa: profileData.payload.cgpa,
         resume: profileData.payload.resume,
+        applicantId:profileData.payload._id,
         join: join,
         hire: hire
       };

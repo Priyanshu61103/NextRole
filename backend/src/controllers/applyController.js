@@ -6,9 +6,8 @@ import { analyzeResumeService } from "../services/resumeAnalysisService.js";
 
 export async function applyController(req, resp) {
   try {
-    const { jobId } = req.params.id;
+    const jobId = req.params.id;
     const data = req.body;
-
     const response = await fetch(data.resume);
     if (!response.ok) {
       return resp.status(500).send({
@@ -16,13 +15,14 @@ export async function applyController(req, resp) {
         success: false,
       });
     }
-    const arrayBuffer = response.arrayBuffer();
-    const resumeFile = buffer.from(arrayBuffer);
+    const arrayBuffer = await response.arrayBuffer();
+    const resumeFile = await buffer.from(arrayBuffer);
     const parsedData = await pdfParse(resumeFile);
     const resumeText = parsedData.text;
     const resumeAnalysis = await analyzeResumeService(resumeText);
     data.atsScore = resumeAnalysis.overallScore;
-    data.jobId = jobId;
+     data.jobId = jobId;
+    // console.log(data);
 
     const result = await applicantsModel.create(data);
     if (!result) {
