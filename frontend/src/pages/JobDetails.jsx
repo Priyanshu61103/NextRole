@@ -280,7 +280,7 @@ const Details = () => {
 
                 <div className="h-0.5 lg:w-170 w-70 mt-7 bg-blue-500"></div>
                 <div className="h-20 w-full flex justify-center items-center">
-                  <Link to={`/apply/${details.payload._id}`}><button className="h-10 w-40 text-black font-bold bg-blue-500 rounded-4xl p-5 flex items-center justify-center">
+                  <Link to={`/apply/${details.payload._id}`} state={{mode:"job"}} ><button className="h-10 w-40 text-black font-bold bg-blue-500 rounded-4xl p-5 flex items-center justify-center">
                     Apply Now
                   </button></Link>
                 </div>

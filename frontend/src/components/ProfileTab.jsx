@@ -1,4 +1,4 @@
-import { Edit, LogOut, X } from "lucide-react";
+import { Edit, Layers, LogOut, X } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfileTab } from "../utils/redux/slice/profileTabSlice/profileTabSlice";
@@ -21,7 +21,7 @@ const ProfileTab = () => {
   return (
     <div>
       {profileData && profileData.payload && (
-        <div className="h-85 w-80 p-5 flex flex-wrap justify-center items-around text-gray-100 rounded-xl bg-[rgb(49,49,49)]">
+        <div className="h-fit w-80 p-5 flex flex-wrap justify-center items-around text-gray-100 rounded-xl bg-[rgb(49,49,49)]">
           <div className="w-full flex justify-between">
             <h2 className="font-semibold">{profileData.payload.email}</h2>
             <X onClick={() => dispatch(setProfileTab())} />
@@ -50,6 +50,12 @@ const ProfileTab = () => {
                   <button className="h-12 w-58 flex justify-center items-center gap-x-2 border-b-4 border-blue-600 font-semibold">
                     <Edit />
                     Edit Profile
+                  </button>
+                </Link>
+                <Link to="/my-applications">
+                  <button className="h-12 w-58 flex justify-center items-center gap-x-2 border-b-4 border-blue-600 font-semibold">
+                    <Layers />
+                    My Applications
                   </button>
                 </Link>
                 <button

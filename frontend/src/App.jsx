@@ -28,6 +28,7 @@ import Login from "./pages/Login.jsx";
 import AccountType from "./pages/AccountType.jsx";
 import CreatePassword from "./pages/CreatePassword.jsx";
 import Apply from "./pages/Apply.jsx";
+import MyApplications from "./pages/MyApplications.jsx";
 
 const App = () => {
   return (
@@ -68,6 +69,7 @@ const App = () => {
           <Route path="/ai-interview" element={<InterviewRoom/>}></Route>
           <Route path="/create-password" element = {<CreatePassword/>}></Route>
           <Route path="/apply/:id" element = {<Apply/>}></Route>
+          <Route path="/my-applications" element= {<MyApplications/>}></Route>
         </Routes>
       </Router>
     </Provider>

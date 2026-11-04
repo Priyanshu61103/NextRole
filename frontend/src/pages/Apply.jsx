@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Testimonials from "../components/Testimonials";
 import Footer from "../components/Footer";
@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 
 const Apply = () => {
   const { id } = useParams();
+  const location = useLocation();
+  const { mode } = location.state;
   const profileData = useSelector((state) => state.profileData.value);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const profileTab = useSelector((state) => state.profileTab.value);
@@ -34,7 +36,7 @@ const Apply = () => {
       }
 
       const applicantData = {
-        mode: "job",
+        mode,
         firstName: profileData.payload.firstName,
         lastName: profileData.payload.lastName,
         mobileNumber: profileData.payload.mobileNumber,
@@ -63,11 +65,11 @@ const Apply = () => {
       const data = await response.json();
 
       if (data.success) {
-        toast.success("Hooray 🎉! Your Application is Sent for the job.");
+        toast.success(`Hooray 🎉! Your Application is Sent for the ${mode}.`);
         navigate("/");
         return;
       }
-      toast.error("Your Application is not sent for the job.");
+      toast.error(`Your Application is not sent for the ${mode}.`);
     } catch (error) {
       console.log(error);
       toast.error("Internal Server Error");

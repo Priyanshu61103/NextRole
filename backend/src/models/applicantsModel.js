@@ -41,6 +41,11 @@ const applicantsSchema = new mongoose.Schema({
        type:mongoose.Schema.Types.ObjectId,
        default:Date.now 
    },
+   mode:{
+       type:String,
+       required:true,
+       enum:["job","internship"]
+   },
    atsScore:{
       type:String,
       required:true 
