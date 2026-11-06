@@ -7,6 +7,8 @@ import { analyzeResumeService } from "../services/resumeAnalysisService.js";
 import { transport } from "../utils/nodemailer.js";
 import { jobModel } from "../models/jobModel.js";
 import mongoose from "mongoose";
+import {ObjectId} from "mongoose";
+import { internshipModel } from "../models/internshipModel.js";
 
 export async function applyController(req, resp) {
   try {
@@ -36,7 +38,7 @@ export async function applyController(req, resp) {
     if (data.mode == "job") {
       const result2 = await studentModel.updateOne(
         { email: data.email },
-        { $push: { appliedJobs: result._id } },
+        { $push: { appliedJobs: data.jobId } },
       );
       if (!result2) {
         return resp
@@ -62,7 +64,7 @@ export async function applyController(req, resp) {
     } else {
       const result2 = await studentModel.updateOne(
         { email: data.email },
-        { $push: { appliedInternships: result._id } },
+        { $push: { appliedInternships: data.jobId } },
       );
       if (!result2) {
         return resp
@@ -95,10 +97,12 @@ export async function applyController(req, resp) {
 export async function loadApplicationsController(req,resp){
     try{
        const { appliedJobs , appliedInternships } = req.body;
-       console.log(appliedJobs);
-       console.log(appliedInternships);
-       const result = await jobModel.find({_id :{$in:appliedJobs}});
-       console.log(result);
+       let appliedJobs2,appliedInternships2;
+       appliedJobs2 = appliedJobs.map((data)=>new mongoose.Types.ObjectId(data));
+       appliedInternships2 = appliedInternships.map((data)=>new mongoose.Types.ObjectId(data));
+       const result = await jobModel.find({_id : {$in:appliedJobs2}}).sort({createdAt:-1});
+       const result2 = await internshipModel.find({_id : {$in:appliedInternships2}}).sort({createdAt:-1}); 
+       return resp.status(200).send({message:"Applications are Loaded Successfully",jobs:result,internships:result2,success:true});
     }catch(error){
         console.log(error);
         return resp.status(500).send({message:"Internal Server Error",success:false});  

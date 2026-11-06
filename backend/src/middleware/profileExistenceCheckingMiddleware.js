@@ -33,7 +33,7 @@ export async function profileExistenceCheckingMiddleware(req, resp, next) {
     if (result) {
       return resp.status(200).send({
         message: "User Account Already Exists in Database",
-        success: true,
+        success: false,
       });
     }
 
@@ -41,7 +41,7 @@ export async function profileExistenceCheckingMiddleware(req, resp, next) {
     if (result2) {
       return resp.status(200).send({
         message: "User Account Already Exists in Database",
-        success: true,
+        success: false,
       });
     }
     req.data = {email,name};
