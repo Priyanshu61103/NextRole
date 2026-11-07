@@ -23,19 +23,35 @@ const MyApplications = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const user = localStorage.getItem("user");
   const saveDetails = (data) => {
       dispatch(setDetails(data));
+      if(user == "candidate")
       navigate("/jobdetails");
+      else
+      navigate(`/application-details/${data._id}`);
     };
   const applicationsHandler = async () => {
     try {
+      let applicationInfo;
+      if(user == "candidate"){
+         applicationInfo = {
+          appliedJobs: profileData.payload.appliedJobs,
+          appliedInternships: profileData.payload.appliedInternships,
+          user
+        };        
+      }
+      else{
+        applicationInfo = {
+          postedJobs: profileData.payload.postedJobs,
+          postedInternships: profileData.payload.postedInternships,
+          user
+        }; 
+      }
       const response = await fetch(`${VITE_BACKEND_URL}/load-applications`, {
         credentials: "include",
         method: "POST",
-        body: JSON.stringify({
-          appliedJobs: profileData.payload.appliedJobs,
-          appliedInternships: profileData.payload.appliedInternships,
-        }),
+        body: JSON.stringify(applicationInfo),
         headers: {
           "content-type": "application/json",
         },
@@ -165,6 +181,7 @@ const MyApplications = () => {
                 className="h-60 w-150 rounded-xl border-2 border-blue-500 p-5"
                 style={{ backgroundColor: "rgb(20, 20 , 20)" }}
               >
+                {user== "candidiate" ? (
                 <div className="h-7 w-32 border-2 border-gray-200 rounded-xl flex justify-center items-center gap-1 px-2">
                   <img
                     src="../target_icon.png"
@@ -174,7 +191,17 @@ const MyApplications = () => {
                   <h1 className="text-xs text-blue-400 whitespace-nowrap">
                     Actively Hiring
                   </h1>
-                </div>
+                </div>):(
+                <div className="h-7 w-32 border-2 border-gray-200 rounded-xl flex justify-center items-center gap-1 px-2">
+                  <img
+                    src="../target_icon.png"
+                    alt=""
+                    className="h-4 w-4 object-contain flex-shrink-0"
+                  />
+                  <h1 className="text-xs text-blue-400 whitespace-nowrap">
+                    Recently Posted
+                  </h1>
+                </div>)}
                 <div className="w-135 h-20 flex mt-1 flex-row justify-between items-center">
                   <div>
                     <h1 className="text-xl font-semibold text-gray-300 mt-4">

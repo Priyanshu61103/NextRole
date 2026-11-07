@@ -29,6 +29,7 @@ import AccountType from "./pages/AccountType.jsx";
 import CreatePassword from "./pages/CreatePassword.jsx";
 import Apply from "./pages/Apply.jsx";
 import MyApplications from "./pages/MyApplications.jsx";
+import ApplicationDetails from "./pages/ApplicationDetails.jsx";
 
 const App = () => {
   return (
@@ -70,6 +71,7 @@ const App = () => {
           <Route path="/create-password" element = {<CreatePassword/>}></Route>
           <Route path="/apply/:id" element = {<Apply/>}></Route>
           <Route path="/my-applications" element= {<MyApplications/>}></Route>
+          <Route path="/application-details/:id" element={<ApplicationDetails/>}></Route>
         </Routes>
       </Router>
     </Provider>

@@ -7,7 +7,7 @@ import { analyzeResumeService } from "../services/resumeAnalysisService.js";
 import { transport } from "../utils/nodemailer.js";
 import { jobModel } from "../models/jobModel.js";
 import mongoose from "mongoose";
-import {ObjectId} from "mongoose";
+import { ObjectId } from "mongoose";
 import { internshipModel } from "../models/internshipModel.js";
 
 export async function applyController(req, resp) {
@@ -93,18 +93,69 @@ export async function applyController(req, resp) {
   }
 }
 
-
-export async function loadApplicationsController(req,resp){
-    try{
-       const { appliedJobs , appliedInternships } = req.body;
-       let appliedJobs2,appliedInternships2;
-       appliedJobs2 = appliedJobs.map((data)=>new mongoose.Types.ObjectId(data));
-       appliedInternships2 = appliedInternships.map((data)=>new mongoose.Types.ObjectId(data));
-       const result = await jobModel.find({_id : {$in:appliedJobs2}}).sort({createdAt:-1});
-       const result2 = await internshipModel.find({_id : {$in:appliedInternships2}}).sort({createdAt:-1}); 
-       return resp.status(200).send({message:"Applications are Loaded Successfully",jobs:result,internships:result2,success:true});
-    }catch(error){
-        console.log(error);
-        return resp.status(500).send({message:"Internal Server Error",success:false});  
+export async function loadApplicationsController(req, resp) {
+  try {
+    const { user } = req.body;
+    if (user == "candidate") {
+      const { appliedJobs, appliedInternships } = req.body;
+      let appliedJobs2, appliedInternships2;
+      appliedJobs2 = appliedJobs.map(
+        (data) => new mongoose.Types.ObjectId(data),
+      );
+      appliedInternships2 = appliedInternships.map(
+        (data) => new mongoose.Types.ObjectId(data),
+      );
+      const result = await jobModel
+        .find({ _id: { $in: appliedJobs2 } })
+        .sort({ createdAt: -1 });
+      const result2 = await internshipModel
+        .find({ _id: { $in: appliedInternships2 } })
+        .sort({ createdAt: -1 });
+      return resp.status(200).send({
+        message: "Applications are Loaded Successfully",
+        jobs: result,
+        internships: result2,
+        success: true,
+      });
+    } else {
+      const { postedJobs, postedInternships } = req.body;
+      let postedJobs2, postedInternships2;
+      postedJobs2 = postedJobs.map((data) => new mongoose.Types.ObjectId(data));
+      postedInternships2 = postedInternships.map(
+        (data) => new mongoose.Types.ObjectId(data),
+      );
+      const result = await jobModel
+        .find({ _id: { $in: postedJobs2 } })
+        .sort({ createdAt: -1 });
+      const result2 = await internshipModel
+        .find({ _id: { $in: postedInternships2 } })
+        .sort({ createdAt: -1 });
+      return resp.status(200).send({
+        message: "Applications are Loaded Successfully",
+        jobs: result,
+        internships: result2,
+        success: true,
+      });
     }
+  } catch (error) {
+    console.log(error);
+    return resp
+      .status(500)
+      .send({ message: "Internal Server Error", success: false });
+  }
+}
+
+export async function loadApplicantsController(req,resp){
+   try{
+      const { id } = req.params;
+      const id2 = new mongoose.Types.ObjectId(id)
+      const result = await applicantsModel.find({jobId : id2});
+      if(!result) 
+      return resp.status(400).send({message:"Applicants Data Not Loaded",success:false});
+    
+      return resp.status(200).send({message:"Applicants Data Loaded Successfully",result,success:true});
+   }catch(error){
+      console.log(error);
+      return resp.status(500).send({message:"Internal Server Error",success:false});
+   }
 }
