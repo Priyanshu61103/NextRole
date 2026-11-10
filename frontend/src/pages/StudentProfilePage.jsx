@@ -15,7 +15,7 @@ import {
   Share2,
   University,
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { setProfileData } from "../utils/redux/slice/profileDataSlice/profileDataSlice";
 import ProfileTab from "../components/ProfileTab";
 import Host from "../components/Host";
@@ -23,35 +23,42 @@ import { toast } from "react-toastify";
 
 const StudentProfilePage = () => {
   const profileData = useSelector((state) => state.profileData.value);
-  console.log(profileData);
+  const location = useLocation();
+  let id;
+  if (location.state) id = location.state.id;
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
   const profileTab = useSelector((state) => state.profileTab.value);
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const [arr, setArr] = useState([]);
+  const [profile, setProfile] = useState(profileData.payload);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const projectArray = [];
   const workExperienceArray = [];
-  if (profileData && profileData.payload) {
-    const projects = profileData.payload.projects;
-    const workExperience = profileData.payload.workExperience;
+  if (!(profile == profileData.payload && localStorage.getItem("user") == "recruiter")) {
+      const projects = profile.projects;
+      const workExperience = profile.workExperience;
+      if (projects.length) {
+        for (let i = 0; i < projects.length; i++) {
+          const projectObj = {};
+          const projectArr = projects[i].split("=");
+          projectObj.title = projectArr[1];
+          projectObj.description = projectArr[3];
+          projectArray.push(projectObj);
+        }
+      }
+      if (workExperience.length) {
+        for (let i = 0; i < workExperience.length; i++) {
+          const workExperienceObj = {};
+          const workExperienceArr = workExperience[i].split("=");
+          workExperienceObj.title = workExperienceArr[1];
+          workExperienceObj.description = workExperienceArr[3];
+          workExperienceArray.push(workExperienceObj);
+        }
+      }
+    }
 
-    for (let i = 0; i < projects.length; i++) {
-      const projectObj = {};
-      const projectArr = projects[i].split("=");
-      projectObj.title = projectArr[1];
-      projectObj.description = projectArr[3];
-      projectArray.push(projectObj);
-    }
-    for (let i = 0; i < workExperience.length; i++) {
-      const workExperienceObj = {};
-      const workExperienceArr = workExperience[i].split("=");
-      workExperienceObj.title = workExperienceArr[1];
-      workExperienceObj.description = workExperienceArr[3];
-      workExperienceArray.push(workExperienceObj);
-    }
-  }
   const fetchUserData = async () => {
     try {
       const response = await fetch(`${VITE_BACKEND_URL}/fetch-user-data`, {
@@ -67,12 +74,49 @@ const StudentProfilePage = () => {
       });
 
       const data = await response.json();
-      if (!response.ok){
-               toast.error("Internal Server Error");
-               return;
-            }
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
       if (data.success) {
+        console.log("data: ",data);
         dispatch(setProfileData(data.result));
+        setProfile(data.result);
+        setArr(data.result.skills);
+        console.log("Running...");
+        return;
+      }
+      return;
+    } catch (error) {
+      console.log(error);
+      toast.error("Internal Server Error");
+    }
+  };
+
+  const fetchUserDataById = async () => {
+    try {
+      const response = await fetch(
+        `${VITE_BACKEND_URL}/fetch-user-data-by-id`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            id,
+            user: "candidate",
+          }),
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+        },
+      );
+
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error("Internal Server Error");
+        return;
+      }
+      if (data.success) {
+        setProfile(data.result);
         setArr(data.result.skills);
         console.log("Running...");
         return;
@@ -85,7 +129,9 @@ const StudentProfilePage = () => {
   };
 
   useEffect(() => {
-    if (!profileData || !profileData.payload) fetchUserData();
+    if (id) {
+      fetchUserDataById();
+    } else if (!id && (!profileData || !profileData.payload)) fetchUserData();
   }, []);
 
   const logOutHandler = () => {
@@ -104,7 +150,7 @@ const StudentProfilePage = () => {
       {hostSwitch == "on" && <Host />}
       <Navbar />
 
-      {profileData && profileData.payload && (
+      {profile && (
         <div
           className={
             hostSwitch == "on"
@@ -118,21 +164,21 @@ const StudentProfilePage = () => {
         >
           <div className="relative top-10">
             <div className="w-full min-h-200 flex flex-wrap justify-center mt-10 lg:mb-30 mb-40">
-              {profileData && profileData.payload && (
+              {profile && (
                 <div className="border-2 border-blue-600 rounded-t-4xl">
                   <img
-                    src={profileData.payload.coverPhoto}
+                    src={profile.coverPhoto}
                     alt=""
                     className="w-249 h-80 rounded-t-4xl"
                   />
                 </div>
               )}
               <div className="lg:w-250 w-100 h-fit border-2 border-blue-600 p-10 pt-2 pl-12 rounded-b-4xl">
-                {profileData && profileData.payload && (
+                {profile && (
                   <div className="flex flex-wrap h-40 gap-5 items-center justify-around">
                     <div className="flex h-40 w-40 rounded-full bg-white gap-x-2 items-center justify-around mb-5">
                       <img
-                        src={profileData.payload.profilePhoto}
+                        src={profile.profilePhoto}
                         alt=""
                         className="rounded-full"
                       />
@@ -143,15 +189,14 @@ const StudentProfilePage = () => {
                           "lg:text-3xl text-lg text-gray-300 font-semibold"
                         }
                       >
-                        {profileData.payload.firstName}{" "}
-                        {profileData.payload.lastName}
+                        {profile.firstName} {profile.lastName}
                       </h1>
                       <p
                         className={
                           "lg:text-lg text-xs font-semibold text-blue-500 mb-5"
                         }
                       >
-                        {profileData.payload.userName}
+                        {profile.userName}
                       </p>
                       <div className="w-140 flex flex-wrap gap-2">
                         <div className="flex items-center gap-x-5">
@@ -161,7 +206,7 @@ const StudentProfilePage = () => {
                             </button>
                           </div>
                           <div className="font-semibold">
-                            {profileData.payload.collegeName}
+                            {profile.collegeName}
                           </div>
                         </div>
                         <div className="flex items-center gap-x-5">
@@ -170,7 +215,7 @@ const StudentProfilePage = () => {
                               <DockIcon size={20} />
                             </button>
                           </div>
-                          <a href={profileData.payload.resume}>
+                          <a href={profile.resume}>
                             <button className="text-blue-400 font-semibold cursor-pointer">
                               Resume
                             </button>
@@ -207,7 +252,7 @@ const StudentProfilePage = () => {
                       About
                     </h1>
                     <p className={"text-white mt-5 text-md font-medium"}>
-                      {profileData.payload.summary}
+                      {profile.summary}
                     </p>
                   </div>
                 </div>
@@ -217,7 +262,7 @@ const StudentProfilePage = () => {
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Resume
                     </h1>
-                    <a href={profileData.payload.resume}>
+                    <a href={profile.resume}>
                       <button className="flex justify-center items-center gap-x-2 border-2 border-blue-600 rounded-2xl p-2 mt-4">
                         <button className="border-2 border-gray-300 rounded-lg">
                           <img
@@ -226,34 +271,30 @@ const StudentProfilePage = () => {
                             className="h-7 w-7"
                           />
                         </button>
-                        {profileData.payload.firstName}{" "}
-                        {profileData.payload.lastName} Resume
+                        {profile.firstName} {profile.lastName} Resume
                       </button>
                     </a>
                   </div>
                 </div>
-                {profileData &&
-                  profileData.payload &&
-                  arr &&
-                  arr.length > 1 && (
-                    <div>
-                      <div className="h-0.5 lg:w-220 w-70 mt-10 bg-blue-500"></div>
-                      <div className="mt-5 ml-0">
-                        <h1 className={"text-xl font-semibold text-gray-300"}>
-                          Skills
-                        </h1>
-                        <div className="mt-5 lg:w-235 w-80 flex gap-x-5 gap-y-2 flex-wrap">
-                          {arr.map((data) => (
-                            <div>
-                              <button className="min-h-10 min-w-30 rounded-full border-2 text-gray-300 border-blue-400 font-semibold p-2">
-                                {data}
-                              </button>
-                            </div>
-                          ))}
-                        </div>
+                {profile && profile && arr && arr.length > 1 && (
+                  <div>
+                    <div className="h-0.5 lg:w-220 w-70 mt-10 bg-blue-500"></div>
+                    <div className="mt-5 ml-0">
+                      <h1 className={"text-xl font-semibold text-gray-300"}>
+                        Skills
+                      </h1>
+                      <div className="mt-5 lg:w-235 w-80 flex gap-x-5 gap-y-2 flex-wrap">
+                        {arr.map((data) => (
+                          <div>
+                            <button className="min-h-10 min-w-30 rounded-full border-2 text-gray-300 border-blue-400 font-semibold p-2">
+                              {data}
+                            </button>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  )}
+                  </div>
+                )}
 
                 <div>
                   <div className="h-0.5 lg:w-220 w-70 mt-10 bg-blue-500"></div>
@@ -270,29 +311,29 @@ const StudentProfilePage = () => {
                       <div className="mt-5 lg:w-235 w-80 flex gap-x-5 gap-y-2 flex-wrap">
                         <div>
                           <div className="font-semibold text-white">
-                            {profileData.payload.collegeName}
+                            {profile.collegeName}
                           </div>
                           <div className="text-sm text-blue-400 mt-1">
                             <div className="flex gap-x-2">
                               <GraduationCap color={"gray"} />
                               <h1>
-                                Graduation-{profileData.payload.course}-
-                                {profileData.payload.specialization}
+                                Graduation-{profile.course}-
+                                {profile.specialization}
                               </h1>
                             </div>
                             <div className="flex gap-x-4">
                               <div className="flex gap-x-2">
                                 <CalendarRange color={"gray"} />
                                 <h1>
-                                  {profileData.payload.startingYear}-
-                                  {profileData.payload.yearOfGraduation}
+                                  {profile.startingYear}-
+                                  {profile.yearOfGraduation}
                                 </h1>
                               </div>
                               <div className="flex gap-x-2">
                                 <Award color={"gray"} />
                                 <h1>
                                   CGPA-
-                                  {profileData.payload.cgpa}
+                                  {profile.cgpa}
                                 </h1>
                               </div>
                             </div>
@@ -366,9 +407,9 @@ const StudentProfilePage = () => {
                     <h1 className={"text-xl font-semibold text-gray-300"}>
                       Achievements
                     </h1>
-                    {profileData.payload.achievements.length > 0 &&
-                    profileData.payload.achievements[0].trim() != "" ? (
-                      profileData.payload.achievements.map((itr, index) => (
+                    {profile.achievements && profile.achievements.length > 0 &&
+                    profile.achievements[0].trim() != "" ? (
+                      profile.achievements.map((itr, index) => (
                         <div
                           key={index}
                           className="border-2 border-blue-500 rounded-2xl p-4 my-4"

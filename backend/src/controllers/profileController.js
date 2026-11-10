@@ -45,6 +45,50 @@ export async function userDataController(req, resp) {
   }
 }
 
+
+export async function userDataByIdController(req, resp) {
+  try {
+    const { id } = req.body;
+    const { user } = req.body;
+    if (user == "candidate") {
+      const result = await studentModel.findOne({ _id:id });
+      if (result) {
+        return resp.status(200).send({
+          message: "User Data Fetched From Database",
+          success: true,
+          result,
+        });
+      }
+      return resp.status(500).send({
+        message: "User Data Not Fetched From Database",
+        success: false,
+      });
+    } else if (user == "recruiter") {
+      const result = await recruiterModel.findOne({ userName });
+      if (result) {
+        return resp.status(200).send({
+          message: "User Data Fetched From Database",
+          success: true,
+          result,
+        });
+      }
+      return resp.status(500).send({
+        message: "User Data Not Fetched From Database",
+        success: false,
+      });
+    }
+    return resp
+      .status(500)
+      .send({ message: "User Data Not Fetched From Database", success: false });
+  } catch (error) {
+    console.log(error);
+    return resp
+      .status(500)
+      .send({ message: "User Data Not Fetched From Database", success: false });
+  }
+}
+
+
 export async function editProfileController(req, resp) {
   try {
     const data = req.body;

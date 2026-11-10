@@ -35,7 +35,7 @@ const Details = () => {
   },[]);
   return (
     <div
-      className="h-700 w-full text-white"
+      className="h-fit min-h-screen w-full text-white"
       style={{ backgroundColor: "rgb(25,25,25)" }}
     >
       <Navbar />

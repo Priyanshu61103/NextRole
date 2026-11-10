@@ -9,7 +9,7 @@ import {
   IndianRupee,
   Layers,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const ApplicationDetails = () => {
@@ -161,7 +161,7 @@ const ApplicationDetails = () => {
                     Q: Why you should hire me ?
                   </div>
                   <div className="w-200 text-gray-200 text-xs mb-2">{data.hire}</div>
-                  <button className="w-40 p-2 bg-blue-600 rounded-2xl mt-3 text-md text-white font-semibold">View Profile</button>
+                  <Link to="/candidate-profile" state={{id:data.applicantId}}><button className="w-40 p-2 bg-blue-600 rounded-2xl mt-3 text-md text-white font-semibold">View Profile</button></Link>
                 </div>
               ))}
           </div>
