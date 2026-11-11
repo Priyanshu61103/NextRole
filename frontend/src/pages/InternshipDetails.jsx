@@ -27,12 +27,13 @@ const Details = () => {
       newStr = "";
     }
   }
-  console.log(arr);
+
   useEffect(() => {
     setTimeout(() => {
       setSpinner(false);
     }, 3000);
   }, []);
+  
   return (
     <div
       className="h-fit min-h-screen w-full text-white"

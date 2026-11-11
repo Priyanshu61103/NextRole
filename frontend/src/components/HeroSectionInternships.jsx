@@ -133,7 +133,7 @@ const HeroSectionInternships = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-400">No Jobs Available</p>
+            <p className="text-center text-gray-400">No Internships Available</p>
           )}
           <button
             onClick={() => {
