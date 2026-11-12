@@ -1,6 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilterButton } from "../utils/redux/slice/filterButtonSlice/filterButtonSlice";
 
 const Filter = () => {
+  const filterButton = useSelector((state) => state.filterButton.value);
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState("");
+  const [location, setLocation] = useState("");
+  const [experience, setExperience] = useState("");
+  const [salary, setSalary] = useState("");
+
   return (
     <div className="flex gap-x-10">
       <div
@@ -18,410 +27,425 @@ const Filter = () => {
             <br />
             <br />
             <select
-              type="text"
-              placeholder="eg: Sales"
+              name="profile"
               id="profile"
-              className="h-10 w-70 p-5 border-2 border-blue-400 outline-0 placeholder:text-gray-300"
+              onChange={(event) => {
+                setProfile(event.target.value);
+                const filterData = {
+                  profile: event.target.value,
+                  location,
+                  experience,
+                  salary,
+                };
+                dispatch(setFilterButton(filterData));
+              }}
+              className="p-2 border-2 border-blue-400 outline-0 text-gray-200 font-semibold"
             >
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="web-development"
+                value=""
               >
-                Web Development
+                Select Profile
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="data-analyst"
+                value="Software Developer"
+              >
+                Software Developer
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Software Engineer"
+              >
+                Software Engineer
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Web Developer"
+              >
+                Web Developer
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Data Analyst"
               >
                 Data Analyst
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value=".net-development"
+                value=".NET Developer"
               >
-                .NET Development
+                .NET Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="sales"
+                value="Sales"
               >
                 Sales
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="marketing"
+                value="Marketing"
               >
                 Marketing
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="3d-printing"
+                value="3D Printing"
               >
                 3D Printing
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ai-agents-development"
+                value="AI Agents Developer"
               >
-                AI Agents Development
+                AI Agents Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="accounting"
+                value="Accounting"
               >
                 Accounting
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="acting"
+                value="Actor"
               >
-                Acting
+                Actor
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="aerospace-engineering"
+                value="Aerospace Engineer"
               >
-                Aerospace Engineering
+                Aerospace Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="agriculture-and-food-engineering"
+                value="Agriculture and Food Engineer"
               >
-                Agriculture and Food Engineering
+                Agriculture and Food Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="analytics"
+                value="Analytics"
               >
                 Analytics
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="anchoring"
+                value="Anchor"
               >
-                Anchoring
+                Anchor
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="android-app-development"
+                value="Android App Developer"
               >
-                Android App Development
+                Android App Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="angular-js-development"
+                value="Angular.js Developer"
               >
-                Angular.js Development
+                Angular.js Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="animation"
+                value="Animator"
               >
-                Animation
+                Animator
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="architecture"
+                value="Architect"
               >
-                Architecture
+                Architect
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="artificial-intelligence"
+                value="Artificial Intelligence(AI)"
               >
                 Artificial Intelligence(AI)
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="frontend-development"
+                value="Frontend Developer"
               >
-                Frontend Development
+                Frontend Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="backend-development"
+                value="Backend Developer"
               >
-                Backend Development
+                Backend Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="banking"
+                value="Banking"
               >
                 Banking
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="computer-science"
+                value="Computer Science"
               >
                 Computer Science
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="engineering"
+                value="Engineering"
               >
                 Engineering
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="engineering-design"
+                value="Engineering Design"
               >
                 Engineering Design
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="cloud-computing"
+                value="Cloud Computing"
               >
                 Cloud Computing
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="blockchain-development"
+                value="Blockchain Developer"
               >
-                Blockchain Development
+                Blockchain Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="blogging"
+                value="Blogger"
               >
-                Blogging
+                Blogger
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="brand-management"
+                value="Brand Management"
               >
                 Brand Management
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="business-development"
+                value="Business Developer"
               >
-                Business Development
+                Business Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="culinary-arts"
+                value="Culinary Arts"
               >
                 Culinary Arts
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="chartened-accountant"
+                value="Chartered Accountant"
               >
-                Chartened Accountant(CA)
+                Chartered Accountant(CA)
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="chemical-engineering"
+                value="Chemical Engineer"
               >
-                Chemical Engineering
+                Chemical Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="data-entry"
+                value="Data Entry"
               >
                 Data Entry
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="data-science"
+                value="Data Scientist"
               >
-                Data Science
+                Data Scientist
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ai-engineer"
+                value="AI Engineer"
               >
                 AI Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="auditing"
+                value="Auditor"
               >
-                Auditing
+                Auditor
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="copywriting"
+                value="Copywriter"
               >
-                Copywriting
+                Copywriter
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="flutter-development"
+                value="Flutter Developer"
               >
-                Flutter Development
+                Flutter Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="full-stack-development"
+                value="Full Stack Developer"
               >
-                Full Stack Development
+                Full Stack Developer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="fundraising"
+                value="Fundraising"
               >
                 Fundraising
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="game-design"
+                value="Game Designer"
               >
-                Game Design
+                Game Designer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mathematics"
+                value="Mathematics"
               >
                 Mathematics
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="anchoring"
-              >
-                Anchoring
-              </option>
-              <option
-                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="biology"
+                value="Biology"
               >
                 Biology
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="big-data"
+                value="Big Data"
               >
                 Big Data
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mechanical-engineering"
+                value="Mechanical Engineer"
               >
-                Mechanical Engineering
+                Mechanical Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="commerce"
+                value="Commerce"
               >
                 Commerce
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="electrical-engineering"
+                value="Electrical Engineer"
               >
-                Electrical Engineering
+                Electrical Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="electric-vehicle"
+                value="Electric Vehicle"
               >
                 Electric Vehicle
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="electronics-engineering"
+                value="Electronics Engineer"
               >
-                Electronics Engineering
+                Electronics Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="embedded-systems"
+                value="Embedded Systems"
               >
                 Embedded Systems
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="campus-ambassador"
+                value="Campus Ambassador"
               >
                 Campus Ambassador
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="civil-engineering"
+                value="Civil Engineer"
               >
-                Civil Engineering
+                Civil Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="customer-service"
+                value="Customer Service"
               >
                 Customer Service
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="media"
+                value="Media"
               >
                 Media
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="medicine"
+                value="Medicine"
               >
                 Medicine
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="design"
+                value="Designer"
               >
-                Design
+                Designer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nutrition"
+                value="Nutritionist"
               >
-                Nutrition
+                Nutritionist
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="videography"
+                value="Videographer"
               >
-                Videography
+                Videographer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="cinematography"
+                value="Cinematographer"
               >
-                Cinematography
+                Cinematographer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="voluntering"
+                value="Volunter"
               >
-                Voluntering
+                Volunter
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="data-engineering"
+                value="Data Engineer"
               >
-                Data Engineering
+                Data Engineer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="physics"
+                value="Physicist"
               >
-                Physics
+                Physicist
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="photography"
+                value="Photographer"
               >
-                Photography
+                Photographer
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="pharmaceutical"
+                value="Pharmaceutical"
               >
                 Pharmaceutical
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="architecture"
-              >
-                Architecture
-              </option>
-              <option
-                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="e-commerce"
+                value="E-commerce"
               >
                 E-commerce
               </option>
@@ -429,338 +453,347 @@ const Filter = () => {
           </div>
 
           <div className="m-10">
-            <label htmlFor="Location" className="text-lg text-gray-300 mb-2">
+            <label htmlFor="location" className="text-lg text-gray-300 mb-2">
               Location
             </label>
             <br />
             <br />
             <select
-              type="text"
-              placeholder="eg: Delhi"
-              id="Location"
-              className="h-10 w-70 p-5 border-2 border-blue-400 rounded-xl placeholder:text-gray-300"
+              id="location"
+              name="location"
+              onChange={(event) => {
+                setLocation(event.target.value);
+                const filterData = {
+                  profile,
+                  location: event.target.value,
+                  experience,
+                  salary,
+                };
+                dispatch(setFilterButton(filterData));
+              }}
+              className="min-w-72 p-2 border-2 border-blue-400 outline-0 text-gray-300 font-semibold"
             >
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="agartala"
+                value=""
+              >
+                Select Location
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Agartala"
               >
                 Agartala
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="agra"
+                value="Agra"
               >
                 Agra
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ahemdabad"
+                value="Ahemdabad"
               >
                 Ahemdabad
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ambala"
+                value="Ambala"
               >
                 Ambala
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="amritsar"
+                value="Amritsar"
               >
                 Amritsar
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="andra"
+                value="Andra"
               >
                 Andra
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="andhra-pradesh"
+                value="Andhra Pradesh"
               >
                 Andhra Pradesh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="arunachal-pradesh"
+                value="Arunachal Pradesh"
               >
                 Arunachal Pradesh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ayodhya"
+                value="Ayodhya"
               >
                 Ayodhya
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="assam"
+                value="Assam"
               >
                 Assam
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="bangaluru"
+                value="Bengaluru"
               >
                 Bengaluru
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="bhopal"
+                value="Bhopal"
               >
                 Bhopal
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="bhubaneswar"
+                value="Bhubaneswar"
               >
                 Bhubaneswar
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="bihar"
+                value="Bihar"
               >
                 Bihar
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="bikaner"
+                value="Bikaner"
               >
                 Bikaner
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="chandigarh"
+                value="Chandigarh"
               >
                 Chandigarh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="chennai"
+                value="Chennai"
               >
                 Chennai
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="chattisgarh"
+                value="Chattisgarh"
               >
                 Chattisgarh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="cuttack"
+                value="Cuttack"
               >
                 Cuttack
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="darjelling"
+                value="Darjelling"
               >
                 Darjelling
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="dehradun"
+                value="Dehradun"
               >
                 Dehradun
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="delhi"
+                value="Delhi"
               >
                 Delhi
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="durgapur"
+                value="Durgapur"
               >
                 Durgapur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="dwarka"
+                value="Dwarka"
               >
                 Dwarka
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="east"
+                value="East"
               >
                 East
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="faridabad"
+                value="Faridabad"
               >
                 Faridabad
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ghaziabad"
+                value="Ghaziabad"
               >
                 Ghaziabad
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="greater-noida"
+                value="Greater Noida"
               >
                 Greater Noida
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="data-science"
+                value="Gurugram"
               >
-                Data Science
+                Gurugram
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="gurgaon"
-              >
-                Gurgaon
-              </option>
-              <option
-                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="gorakhpur"
+                value="Gorakhpur"
               >
                 Gorakhur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="gwalior"
+                value="Gwalior"
               >
                 Gwalior
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="haridwar"
+                value="Haridwar"
               >
                 Haridwar
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="haryana"
+                value="Haryana"
               >
                 Haryana
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="himachal-pradesh"
+                value="Himachal Pradesh"
               >
                 Himachal Pradesh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="hubli"
+                value="Hubli"
               >
                 Hubli
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="hyderabad"
+                value="Hyderabad"
               >
                 Hyderabad
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="imphal"
+                value="Imphal"
               >
                 Imphal
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="indore"
+                value="Indore"
               >
                 Indore
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="jaipur"
+                value="Jaipur"
               >
                 Jaipur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="jalandar"
+                value="Jalandar"
               >
                 Jalandar
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="jhansi"
+                value="Jhansi"
               >
                 Jhansi
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="jharkhand"
+                value="Jharkhand"
               >
                 Jharkhand
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="jodhpur"
+                value="Jodhpur"
               >
                 Jodhpur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="kanpur"
+                value="Kanpur"
               >
                 Kanpur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="karnataka"
+                value="Karnataka"
               >
                 Karnataka
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="kerala"
+                value="Kerala"
               >
                 Kerala
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="kochi"
+                value="Kochi"
               >
                 Kochi
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="kota"
+                value="Kota"
               >
                 Kota
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="krishna"
+                value="Krishna"
               >
                 Krishna
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="lucknow"
+                value="Lucknow"
               >
                 Lucknow
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ludhiana"
+                value="Ludhiana"
               >
                 Ludhiana
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mangalore"
+                value="Mangalore"
               >
                 Mangalore
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="madhya-pradesh"
+                value="Madhya Pradesh"
               >
                 Madhya Pradesh
               </option>
@@ -772,159 +805,225 @@ const Filter = () => {
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mumbai"
+                value="Mumbai"
               >
                 Mumbai
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mysuru"
+                value="Mysuru"
               >
                 Mysuru
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="mizoram"
+                value="Mizoram"
               >
                 Mizoram
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nagaland"
+                value="Nagaland"
               >
                 Nagaland
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nagpur"
+                value="Nagpur"
               >
                 Nagpur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nanital"
+                value="Nanital"
               >
                 Nanital
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nalanda"
+                value="Nalanda"
               >
                 Nalanda
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="nala-soopara"
+                value="Nala Soopara"
               >
                 Nala Soopara
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="new-delhi"
+                value="New Delhi"
               >
                 New Delhi
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="noida"
+                value="Noida"
               >
                 Noida
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="odisha"
+                value="Odisha"
               >
-                odisha
+                Odisha
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="okhla"
+                value="Okhla"
               >
-                okhla
+                Okhla
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="panipat"
-              >
-                okhla
-              </option>
-              <option
-                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="panipat"
+                value="Panipat"
               >
                 Panipat
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="patna"
+                value="Patna"
               >
                 Patna
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="pitampura"
+                value="Pitampura"
               >
                 Pitampura
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="pune"
+                value="Pune"
               >
                 Pune
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="punjab"
+                value="Punjab"
               >
                 Punjab
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="raipur"
+                value="Raipur"
               >
                 Raipur
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="ranchi"
+                value="Ranchi"
               >
                 Ranchi
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="rishikesh"
+                value="Rishikesh"
               >
                 Rishikesh
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="rohini"
+                value="Rohini"
               >
                 Rohini
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="roorkee"
+                value="Roorkee"
               >
                 Roorkee
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="rourkela"
+                value="Rourkela"
               >
                 Rourkela
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="patna"
+                value="Shillong"
               >
-                Patna
+                Shillong
               </option>
               <option
                 className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
-                value="patna"
+                value="Sikkim"
               >
-                Patna
+                Sikkim
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Srinagar"
+              >
+                Srinagar
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Surat"
+              >
+                Surat
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Tamil nadu"
+              >
+                Tamil Nadu
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Trichy"
+              >
+                Trichy
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Tripura"
+              >
+                Tripura
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Uttarakhand"
+              >
+                Uttarakhand
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Uttar pradesh"
+              >
+                Uttar Pradesh
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Vadodara"
+              >
+                Vadodara
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Varanasi"
+              >
+                Varanasi
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Vellore"
+              >
+                Vellore
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="West Bengal"
+              >
+                West Bengal
+              </option>
+              <option
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
+                value="Yamuna Nagar"
+              >
+                Yamuna Nagar
               </option>
             </select>
           </div>
@@ -936,63 +1035,65 @@ const Filter = () => {
             <br />
             <br />
             <select
-              name=""
+              name="experience"
               id="experience"
-              className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200 pl-5"
+              onChange={(event) => {
+                setExperience(event.target.value);
+                const filterData = {
+                  profile,
+                  location,
+                  experience: event.target.value,
+                  salary,
+                };
+                dispatch(setFilterButton(filterData));
+              }}
+              className="p-2 min-w-72 border-2 border-blue-400 outline-0 text-gray-300 font-semibold pl-5"
             >
               <option
-                value="-"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                value=""
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 Select Years of Experience
               </option>
               <option
                 value="0"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 Fresher
               </option>
               <option
                 value="1"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 1 Year
               </option>
               <option
                 value="2"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 2 Years
               </option>
               <option
                 value="3"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 3 Years
               </option>
               <option
                 value="4"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 4 Years
               </option>
               <option
                 value="5"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 5 Years
               </option>
               <option
-                value="more"
-                className="h-10 w-70 border-2 border-blue-400 rounded-xl text-gray-200"
-                style={{ backgroundColor: "rgb(20,20,20)" }}
+                value="5+"
+                className="text-blue-600 font-semibold bg-[rgb(25,25,25)]"
               >
                 5+ Years
               </option>
@@ -1008,14 +1109,34 @@ const Filter = () => {
             </label>
             <br />
             <br />
-            <input type="range" id="salary" list="markers" className="w-50" />
-            <datalist id="markers" className="w-50 flex justify-between">
+            <input
+              type="range"
+              id="salary"
+              value={salary}
+              list="markers"
+              className="w-60"
+              onChange={(event) => {
+                console.log(event.target.value);
+                setSalary(event.target.value);
+                const filterData = {
+                  profile,
+                  location,
+                  experience,
+                  salary: event.target.value,
+                };
+                dispatch(setFilterButton(filterData));
+              }}
+            />
+            <datalist
+              id="markers"
+              name="markers"
+              className="w-60 flex justify-between"
+            >
               <option value="0" label="0"></option>
-              <option value="20" label="2"></option>
-              <option value="40" label="4"></option>
-              <option value="60" label="6"></option>
-              <option value="80" label="8"></option>
-              <option value="100" label="10"></option>
+              <option value="20" label="20"></option>
+              <option value="40" label="40"></option>
+              <option value="60" label="60"></option>
+              <option value="80" label="80"></option>
             </datalist>
           </div>
         </div>

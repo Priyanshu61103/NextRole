@@ -16,7 +16,9 @@ const Jobs = () => {
   const details = useSelector((state) => state.details.value);
   const button = useSelector((state) => state.button.value);
   const profileTab = useSelector((state) => state.profileTab.value);
+  const filterButton = useSelector((state) => state.filterButton.value);
   const [jobData, setJobData] = useState([]);
+  const [filteredJobData, setFilteredJobData] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
@@ -37,9 +39,9 @@ const Jobs = () => {
 
       if (data.success) {
         setJobData(data.result);
+        setFilteredJobData(data.result);
         return;
       }
-      console.log(data.message);
       toast.error("Job Data Not Loaded");
     } catch (error) {
       console.log(error);
@@ -50,6 +52,38 @@ const Jobs = () => {
   useEffect(() => {
     fetchJobData();
   }, []);
+
+  useEffect(() => {
+    const updatedData = jobData.filter((info) => {
+      let verdict = true;
+      if(filterButton.payload.profile != "") verdict &= info.domain.includes(filterButton.payload.profile);
+      if(filterButton.payload.location != "") verdict &= info.location.includes(filterButton.payload.location);
+      if(filterButton.payload.experience != ""){
+        if(filterButton.payload.experience == "5+")
+        verdict &= parseFloat(info.experience) > 5; 
+        else  
+        verdict &= info.experience.includes(filterButton.payload.experience);
+      }
+
+      if(filterButton.payload.salary != "") verdict &= (parseFloat(info.ctc) >= Number(filterButton.payload.salary) && parseFloat(info.ctc) <= Number(filterButton.payload.salary)+5);
+      return verdict; 
+      
+    });
+    
+    if (
+      (
+        filterButton.payload.profile == "" &&
+        filterButton.payload.location == "" &&
+        filterButton.payload.experience == "" &&
+        filterButton.payload.salary == "" 
+      )
+    )
+      setFilteredJobData(jobData);
+    else
+      setFilteredJobData(updatedData);
+  }, [filterButton.payload]);
+  // console.log("Filtered Data:", filteredJobData);
+  // console.log("Filter:", filterButton);
 
   const saveDetails = (data) => {
     dispatch(setDetails(data));
@@ -99,8 +133,8 @@ const Jobs = () => {
               </div>
             </div>
 
-            {jobData.length > 0 ? (
-              jobData.map((job, index) => (
+            {filteredJobData.length > 0 ? (
+              filteredJobData.map((job, index) => (
                 <div
                   key={index}
                   className="h-60 w-180 rounded-xl border-2 border-blue-500 p-5 mb-10"
@@ -157,7 +191,7 @@ const Jobs = () => {
                             style={{ backgroundColor: "rgb(20, 20 , 20)" }}
                           />
                           <p className="text-xs text-gray-300">
-                            Posted 1 week ago
+                            Posted {(new Date().getMonth())-(new Date(job.createdAt).getMonth())} months ago 
                           </p>
                         </div>
                       </div>

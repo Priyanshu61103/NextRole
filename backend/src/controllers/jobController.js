@@ -42,7 +42,7 @@ export async function postJobContoller(req, resp) {
 
 export async function fetchJobDataController(req,resp){
    try{
-      const result = await jobModel.find();
+      const result = await jobModel.find().sort({createdAt:-1});
       if(result){
          return resp.status(200).send({message:"Loaded Job Data Successfully",success:true,result});
       } 

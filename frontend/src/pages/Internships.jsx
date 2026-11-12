@@ -12,11 +12,13 @@ import { useNavigate } from "react-router-dom";
 import ProfileTab from "../components/ProfileTab";
 import { toast } from "react-toastify";
 const Internships = () => {
+  const filterButton = useSelector((state)=>state.filterButton.value);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
   const details = useSelector((state) => state.details.value);
   const profileTab = useSelector((state)=>state.profileTab.value);
   const [internshipData, setInternshipData] = useState([]);
+  const [filteredInternshipData,setFilteredInternshipData] = useState([]);
   const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,6 +38,7 @@ const Internships = () => {
 
       if (data.success) {
         setInternshipData(data.result);
+        setFilteredInternshipData(data.result);
         return;
       }
       console.log(data.message);
@@ -49,11 +52,34 @@ const Internships = () => {
   useEffect(() => {
     fetchInternshipData();
   }, []);
+  useEffect(() => {
+      const updatedData = internshipData.filter((info) => {
+        let verdict = true;
+        if(filterButton.payload.profile != "") verdict &= info.domain.includes(filterButton.payload.profile);
+        if(filterButton.payload.location != "") verdict &= info.location.includes(filterButton.payload.location);
+        if(filterButton.payload.salary != "") verdict &= (parseFloat(info.stipend) >= Number(filterButton.payload.salary) && parseFloat(info.stipend) <= Number(filterButton.payload.salary)+5);
+        return verdict; 
+        
+      });
+      
+      if (
+        (
+          filterButton.payload.profile == "" &&
+          filterButton.payload.location == "" &&
+          filterButton.payload.experience == "" &&
+          filterButton.payload.salary == "" 
+        )
+      )
+        setFilteredInternshipData(internshipData);
+      else
+        setFilteredInternshipData(updatedData);
+    }, [filterButton.payload]);
 
   const saveDetails = (data) => {
     dispatch(setDetails(data));
     navigate("/internshipdetails");
   };
+
   return (
     <div
       className="h-760 w-full text-white"
@@ -91,8 +117,8 @@ const Internships = () => {
               </h1>
             </div>
 
-            {internshipData.length > 0 ? (
-              internshipData.map((internship, index) => (
+            {filteredInternshipData.length > 0 ? (
+              filteredInternshipData.map((internship, index) => (
                 <div
                   key={index}
                   className="h-60 w-180 rounded-xl border-2 border-blue-500 p-5 mb-10"
@@ -145,7 +171,7 @@ const Internships = () => {
                             style={{ backgroundColor: "rgb(20, 20 , 20)" }}
                           />
                           <p className="text-xs text-gray-300">
-                            Posted 1 week ago
+                            Posted {(new Date().getMonth())-(new Date(internship.createdAt).getMonth())} months ago
                           </p>
                         </div>
                       </div>

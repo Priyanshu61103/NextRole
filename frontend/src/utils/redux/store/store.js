@@ -5,6 +5,7 @@ import resumeReducer from '../Slice/resumeSlice/resumeSlice'
 import detailReducer from '../Slice/detailSlice/detailSlice'
 import profileTabReducer from "../Slice/profileTabSlice/profileTabSlice"
 import profileDataReducer from "../Slice/profileDataSlice/profileDataSlice"
+import filterButtonReducer from "../Slice/filterButtonSlice/filterButtonSlice"
 import resumeInputButtonReducer from '../Slice/ResumeInputButtonSlice/resumeInputButtonSlice'
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     details:detailReducer,
     profileTab:profileTabReducer,
     profileData:profileDataReducer,
-    resumeInputButton:resumeInputButtonReducer
+    resumeInputButton:resumeInputButtonReducer,
+    filterButton:filterButtonReducer
   },
 })
