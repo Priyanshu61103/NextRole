@@ -42,9 +42,14 @@ export async function postJobContoller(req, resp) {
 
 export async function fetchJobDataController(req,resp){
    try{
-      const result = await jobModel.find().sort({createdAt:-1});
-      if(result){
-         return resp.status(200).send({message:"Loaded Job Data Successfully",success:true,result});
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 5;
+      const skip = (page-1)*limit;
+      const totalJobs = await jobModel.countDocuments();
+      const totalPages = Math.ceil(totalJobs/limit);
+      const jobData = await jobModel.find().sort({createdAt:-1}).skip(skip).limit(limit);
+      if(jobData){
+         return resp.status(200).send({message:"Loaded Job Data Successfully",success:true,result:{jobData,totalJobs,totalPages}});
       } 
       return resp.status(500).send({message:"Not Loaded Job Data",success:false});
    }catch(error){

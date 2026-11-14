@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { setDetails } from "../utils/redux/slice/detailSlice/detailSlice";
 import ProfileTab from "../components/ProfileTab";
 import { toast } from "react-toastify";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 const Jobs = () => {
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const details = useSelector((state) => state.details.value);
@@ -19,13 +20,15 @@ const Jobs = () => {
   const filterButton = useSelector((state) => state.filterButton.value);
   const [jobData, setJobData] = useState([]);
   const [filteredJobData, setFilteredJobData] = useState([]);
+  const [page , setPage] = useState(1);
+  const [totalPages , setTotalPages] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
   const fetchJobData = async () => {
     try {
-      const response = await fetch(`${VITE_BACKEND_URL}/fetch-job-data`, {
+      const response = await fetch(`${VITE_BACKEND_URL}/fetch-job-data?page=${page}&limit=5`, {
         method: "GET",
         credentials: "include",
       });
@@ -38,8 +41,9 @@ const Jobs = () => {
       const data = await response.json();
 
       if (data.success) {
-        setJobData(data.result);
-        setFilteredJobData(data.result);
+        setJobData(data.result.jobData);
+        setFilteredJobData(data.result.jobData);
+        setTotalPages(data.result.totalPages);
         return;
       }
       toast.error("Job Data Not Loaded");
@@ -51,7 +55,8 @@ const Jobs = () => {
 
   useEffect(() => {
     fetchJobData();
-  }, []);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [page]);
 
   useEffect(() => {
     const updatedData = jobData.filter((info) => {
@@ -81,7 +86,7 @@ const Jobs = () => {
       setFilteredJobData(jobData);
     else
       setFilteredJobData(updatedData);
-  }, [filterButton.payload]);
+  }, [filterButton.payload,jobData]);
   // console.log("Filtered Data:", filteredJobData);
   // console.log("Filter:", filterButton);
 
@@ -212,6 +217,18 @@ const Jobs = () => {
             )}
           </div>
         </div>
+      </div>
+
+      <div className="flex gap-x-5 justify-center">
+          <button onClick={()=>{page > 1 && setPage(page-1)}} className="p-2 border-2 border-blue-600 rounded-xl">
+              <ChevronLeft/>
+          </button>
+          <button className="p-2 border-2 border-blue-600 rounded-xl">
+              {page}
+          </button>
+          <button onClick={()=>{page < totalPages && setPage(page+1)}} className="p-2 border-2 border-blue-600 rounded-xl">
+              <ChevronRight/>
+          </button>
       </div>
 
       <Testimonials />
