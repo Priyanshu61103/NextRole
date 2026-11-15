@@ -11,70 +11,70 @@ import { setDetails } from "../utils/redux/slice/detailSlice/detailSlice";
 import { useNavigate } from "react-router-dom";
 import ProfileTab from "../components/ProfileTab";
 import { toast } from "react-toastify";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 const Internships = () => {
-  const filterButton = useSelector((state)=>state.filterButton.value);
+  const filterButton = useSelector((state) => state.filterButton.value);
   const hostSwitch = useSelector((state) => state.hostSwitch.value);
   const button = useSelector((state) => state.button.value);
   const details = useSelector((state) => state.details.value);
-  const profileTab = useSelector((state)=>state.profileTab.value);
+  const profileTab = useSelector((state) => state.profileTab.value);
   const [internshipData, setInternshipData] = useState([]);
-  const [filteredInternshipData,setFilteredInternshipData] = useState([]);
-  const VITE_BACKEND_URL=import.meta.env.VITE_BACKEND_URL;
+  const [filteredInternshipData, setFilteredInternshipData] = useState([]);
+  const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const profile = filterButton.payload.profile;
+  const location = filterButton.payload.location;
+  const stipend = filterButton.payload.salary;
+  const experience = filterButton.payload.experience;
 
-  const fetchInternshipData = async () => {
-    try {
-      const response = await fetch(`${VITE_BACKEND_URL}/fetch-internship-data`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (!response.ok) {
-        return;
+   const fetchInternshipData = async () => {
+      try {
+        let internshipEligibility = {};
+        if(profile != "") internshipEligibility.domain = profile;
+        if(location != "") internshipEligibility.location= location;
+        if(experience != "") internshipEligibility.experience = experience;
+        if(stipend != "") internshipEligibility.stipend = stipend;
+        const response = await fetch(`${VITE_BACKEND_URL}/fetch-internship-data?page=${page}&limit=5`, {
+          "method": "POST",
+          "body":JSON.stringify({internshipEligibility}),   
+          "headers":{
+             "content-type":"application/json"
+          },
+          "credentials": "include",
+        });
+  
+        if (!response.ok) {
+          toast.error("Internal Server Error");
+          return;
+        }
+  
+        const data = await response.json();
+  
+        if (data.success) {
+          setInternshipData(data.result.internshipData);
+          setFilteredInternshipData(data.result.internshipData);
+          setTotalPages(data.result.totalPages);
+          return;
+        }
+        toast.error("Internship Data Not Loaded");
+      } catch (error) {
+        console.log(error);
+        toast.error("Internal Server Error");
       }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setInternshipData(data.result);
-        setFilteredInternshipData(data.result);
-        return;
-      }
-      console.log(data.message);
-      toast.error("Internship Data Not Loaded");
-    } catch (error) {
-      console.log(error);
-      toast.error("Internal Server Error");
-    }
-  };
-
-  useEffect(() => {
-    fetchInternshipData();
-  }, []);
-  useEffect(() => {
-      const updatedData = internshipData.filter((info) => {
-        let verdict = true;
-        if(filterButton.payload.profile != "") verdict &= info.domain.includes(filterButton.payload.profile);
-        if(filterButton.payload.location != "") verdict &= info.location.includes(filterButton.payload.location);
-        if(filterButton.payload.salary != "") verdict &= (parseFloat(info.stipend) >= Number(filterButton.payload.salary) && parseFloat(info.stipend) <= Number(filterButton.payload.salary)+5);
-        return verdict; 
-        
-      });
-      
-      if (
-        (
-          filterButton.payload.profile == "" &&
-          filterButton.payload.location == "" &&
-          filterButton.payload.experience == "" &&
-          filterButton.payload.salary == "" 
-        )
-      )
-        setFilteredInternshipData(internshipData);
-      else
-        setFilteredInternshipData(updatedData);
-    }, [filterButton.payload]);
-
+    };
+  
+    useEffect(() => {
+      fetchInternshipData();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [page,filterButton.payload]);
+  
+    useEffect(()=>{
+        setPage(1);
+    },[filterButton.payload]);
+  
   const saveDetails = (data) => {
     dispatch(setDetails(data));
     navigate("/internshipdetails");
@@ -98,12 +98,18 @@ const Internships = () => {
               : "opacity-100 z-10"
         }
       >
-         {profileTab && (
+        {profileTab && (
           <div className="flex justify-end z-100 relative bottom-7 right-5">
             <ProfileTab />
           </div>
         )}
-        <div className={profileTab ? "relative bottom-85 flex gap-10" : "relative bottom-0 flex gap-10"}>
+        <div
+          className={
+            profileTab
+              ? "relative bottom-85 flex gap-10"
+              : "relative bottom-0 flex gap-10"
+          }
+        >
           <Filter />
           <div>
             <div className="flex justify-center mb-2">
@@ -171,7 +177,10 @@ const Internships = () => {
                             style={{ backgroundColor: "rgb(20, 20 , 20)" }}
                           />
                           <p className="text-xs text-gray-300">
-                            Posted {(new Date().getMonth())-(new Date(internship.createdAt).getMonth())} months ago
+                            Posted{" "}
+                            {new Date().getMonth() -
+                              new Date(internship.createdAt).getMonth()}{" "}
+                            months ago
                           </p>
                         </div>
                       </div>
@@ -193,6 +202,27 @@ const Internships = () => {
               </p>
             )}
           </div>
+        </div>
+        <div className="flex gap-x-5 justify-center">
+          <button
+            onClick={() => {
+              page > 1 && setPage(page - 1);
+            }}
+            className="p-2 border-2 border-blue-600 rounded-xl"
+          >
+            <ChevronLeft />
+          </button>
+          <button className="p-2 border-2 border-blue-600 rounded-xl">
+            {page}
+          </button>
+          <button
+            onClick={() => {
+              page < totalPages && setPage(page + 1);
+            }}
+            className="p-2 border-2 border-blue-600 rounded-xl"
+          >
+            <ChevronRight />
+          </button>
         </div>
       </div>
       <Testimonials />

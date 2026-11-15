@@ -5,10 +5,10 @@ import { setFilterButton } from "../utils/redux/slice/filterButtonSlice/filterBu
 const Filter = () => {
   const filterButton = useSelector((state) => state.filterButton.value);
   const dispatch = useDispatch();
-  const [profile, setProfile] = useState("");
-  const [location, setLocation] = useState("");
-  const [experience, setExperience] = useState("");
-  const [salary, setSalary] = useState("");
+  const [profile, setProfile] = useState(filterButton.payload.profile);
+  const [location, setLocation] = useState(filterButton.payload.location);
+  const [experience, setExperience] = useState(filterButton.payload.experience);
+  const [salary, setSalary] = useState(filterButton.payload.salary);
 
   return (
     <div className="flex gap-x-10">
@@ -39,6 +39,7 @@ const Filter = () => {
                 };
                 dispatch(setFilterButton(filterData));
               }}
+              value={profile}
               className="p-2 border-2 border-blue-400 outline-0 text-gray-200 font-semibold"
             >
               <option
@@ -471,6 +472,7 @@ const Filter = () => {
                 };
                 dispatch(setFilterButton(filterData));
               }}
+              value={location}
               className="min-w-72 p-2 border-2 border-blue-400 outline-0 text-gray-300 font-semibold"
             >
               <option
@@ -1047,6 +1049,7 @@ const Filter = () => {
                 };
                 dispatch(setFilterButton(filterData));
               }}
+              value={experience}
               className="p-2 min-w-72 border-2 border-blue-400 outline-0 text-gray-300 font-semibold pl-5"
             >
               <option
@@ -1139,6 +1142,11 @@ const Filter = () => {
               <option value="80" label="80"></option>
             </datalist>
           </div>
+        </div>
+        <div className="flex justify-end">
+          <button onClick={()=>dispatch(setFilterButton({profile:"",location:"",experience:"",salary:""}))}className="bg-blue-600 p-2 px-4 rounded-xl text-black font-semibold">
+            Clear
+          </button>
         </div>
       </div>
     </div>

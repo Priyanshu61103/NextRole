@@ -25,12 +25,26 @@ const Jobs = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const VITE_BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+  const profile = filterButton.payload.profile;
+  const location = filterButton.payload.location;
+  const ctc = filterButton.payload.salary;
+  const experience = filterButton.payload.experience;
 
   const fetchJobData = async () => {
     try {
+      let jobEligibility = {};
+      if(profile != "") jobEligibility.domain = profile;
+      if(location != "") jobEligibility.location= location;
+      if(experience != "") jobEligibility.experience = experience;
+      if(ctc != "") jobEligibility.ctc = ctc;
+      console.log(jobEligibility);
       const response = await fetch(`${VITE_BACKEND_URL}/fetch-job-data?page=${page}&limit=5`, {
-        method: "GET",
-        credentials: "include",
+        "method": "POST",
+        "body":JSON.stringify({jobEligibility}),   
+        "headers":{
+           "content-type":"application/json"
+        },
+        "credentials": "include",
       });
 
       if (!response.ok) {
@@ -56,39 +70,11 @@ const Jobs = () => {
   useEffect(() => {
     fetchJobData();
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
+  }, [page,filterButton.payload]);
 
-  useEffect(() => {
-    const updatedData = jobData.filter((info) => {
-      let verdict = true;
-      if(filterButton.payload.profile != "") verdict &= info.domain.includes(filterButton.payload.profile);
-      if(filterButton.payload.location != "") verdict &= info.location.includes(filterButton.payload.location);
-      if(filterButton.payload.experience != ""){
-        if(filterButton.payload.experience == "5+")
-        verdict &= parseFloat(info.experience) > 5; 
-        else  
-        verdict &= info.experience.includes(filterButton.payload.experience);
-      }
-
-      if(filterButton.payload.salary != "") verdict &= (parseFloat(info.ctc) >= Number(filterButton.payload.salary) && parseFloat(info.ctc) <= Number(filterButton.payload.salary)+5);
-      return verdict; 
-      
-    });
-    
-    if (
-      (
-        filterButton.payload.profile == "" &&
-        filterButton.payload.location == "" &&
-        filterButton.payload.experience == "" &&
-        filterButton.payload.salary == "" 
-      )
-    )
-      setFilteredJobData(jobData);
-    else
-      setFilteredJobData(updatedData);
-  }, [filterButton.payload,jobData]);
-  // console.log("Filtered Data:", filteredJobData);
-  // console.log("Filter:", filterButton);
+  useEffect(()=>{
+      setPage(1);
+  },[filterButton.payload]);
 
   const saveDetails = (data) => {
     dispatch(setDetails(data));
