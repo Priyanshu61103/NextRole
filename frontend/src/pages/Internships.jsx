@@ -43,7 +43,7 @@ const Internships = () => {
           "headers":{
              "content-type":"application/json"
           },
-          "credentials": "include",
+          "credentials": "include"
         });
   
         if (!response.ok) {
