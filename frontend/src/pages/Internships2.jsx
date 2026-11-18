@@ -59,7 +59,7 @@ const Jobs2 = () => {
         {
           method: "POST",
           body: formData,
-          credentials: "include"
+          credentials: "include",
         },
       );
 
